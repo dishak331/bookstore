@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Form, Button, Row, Col, ListGroup, InputGroup, Spinner } from 'react-bootstrap';
+import { Form, Button, Row, Col, ListGroup, InputGroup } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 import Message from '../components/Message';
 import CheckoutSteps from '../components/CheckoutSteps';
 import { useDispatch } from 'react-redux';
-import { saveShippingAddressIdToLocalStorage, saveBillingAddressIdToLocalStorage } from '../actions/orderActions';
-import { getMyAddresesAction, saveAddressAction, deleteAddressAction } from '../actions/addressActions';
-import Loader from '../components/Loader';
+
 import { addressActions } from '../reducers/address-slice';
 import { phoneRegex } from '../constants/common';
 
@@ -110,7 +108,8 @@ const ShippingScreen = ({ history }) => {
             ) : ( */}
             <>
               {/* {addressListError && <Message variant='danger'>{JSON.stringify(addressListError)}</Message>} */}
-              <h2>Select Billing Address</h2>
+              <h2>Select Shipping Address</h2>
+              {addresses.length == 0 && <Message>Add address</Message>}
               {addresses.map((a) => (
                 <div key={a.addressId}>
                   <ListGroup.Item variant='flush'>
@@ -123,9 +122,9 @@ const ShippingScreen = ({ history }) => {
                           name='billingAddress'
                           checked={a.addressId === billingAddressId ? true : false}
                           onChange={() => {
-                            if (shippingCheckbox) {
-                              setShippingAddressId(a.addressId);
-                            }
+                            // if (shippingCheckbox) {
+                            //   setShippingAddressId(a.addressId);
+                            // }
                             setBillingAddressId(a.addressId);
                           }}
                         ></Form.Check>
@@ -138,9 +137,9 @@ const ShippingScreen = ({ history }) => {
                             backgroundColor: '#eeeeee'
                           }}
                           onClick={() => {
-                            if (shippingCheckbox) {
-                              setShippingAddressId(a.addressId);
-                            }
+                            // if (shippingCheckbox) {
+                            //   setShippingAddressId(a.addressId);
+                            // }
                             setBillingAddressId(a.addressId);
                           }}
                         >
@@ -162,7 +161,7 @@ const ShippingScreen = ({ history }) => {
                   </ListGroup.Item>
                 </div>
               ))}
-              <Form.Group className='m-5' controlId='shippingCheckbox'>
+              {/* <Form.Group className='m-5' controlId='shippingCheckbox'>
                 <Form.Check
                   type='checkbox'
                   label='Shipping Address is same as Billing Address'
@@ -171,9 +170,9 @@ const ShippingScreen = ({ history }) => {
                     setShippingCheckbox(!shippingCheckbox);
                   }}
                 />
-              </Form.Group>
+              </Form.Group> */}
 
-              {!shippingCheckbox && (
+              {/* {!shippingCheckbox && (
                 <>
                   <h2>Select Shipping Address</h2>
                   {addresses.map((a) => (
@@ -224,7 +223,7 @@ const ShippingScreen = ({ history }) => {
                     </div>
                   ))}
                 </>
-              )}
+              )} */}
             </>
             {/* )} */}
           </Col>

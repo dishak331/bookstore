@@ -1,16 +1,12 @@
-import Paginate from '../components/Paginate';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Product from '../components/Product';
-import Message from '../components/Message';
-import { ButtonGroup, Col, Dropdown, DropdownButton, ListGroup, Row } from 'react-bootstrap';
-import { listProductsAction } from '../actions/productActions';
-import FullPageLoader from '../components/FullPageLoader';
+
+import { ButtonGroup, Col, Dropdown, DropdownButton, Row } from 'react-bootstrap';
+
 import ReactPaginate from 'react-paginate';
-import { products } from '../DummyData';
-import { LinkContainer } from 'react-router-bootstrap';
+
 import { useHistory, useLocation } from 'react-router-dom';
-import Header from '../components/Header';
 
 const sortQuotes = (quotes, ascending) => {
   return quotes.slice().sort((a, b) => {
@@ -141,23 +137,6 @@ const HomeScreen = () => {
           ))}
         </Row>
         {/* pageResponse?.pageable?.pageNumber */}
-        <Row className='m-5 justify-content-md-center'>
-          <ReactPaginate
-            previousLabel={'Previous'}
-            nextLabel={'Next'}
-            breakLabel={'...'}
-            breakClassName={'break-me'}
-            pageCount={1}
-            marginPagesDisplayed={50}
-            pageRangeDisplayed={10}
-            onPageChange={(e) => handlePageClick(e)}
-            containerClassName={'pagination'}
-            activeClassName={'page-item active'}
-            pageLinkClassName={'page-link'}
-            previousClassName={'page-link'}
-            nextClassName={'page-link'}
-          />
-        </Row>
       </>
       {/* )} */}
       {/* {loading && <FullPageLoader></FullPageLoader>} */}

@@ -1,37 +1,17 @@
-import React, { useState, useEffect } from 'react';
-import { PayPalButton } from 'react-paypal-button-v2';
-import { Link } from 'react-router-dom';
+import React, { useEffect } from 'react';
+
 import { Row, Col, ListGroup, Image, Card, Button } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import Message from '../components/Message';
-import Loader from '../components/Loader';
-import { getOrderDetailsAction } from '../actions/orderActions';
+
 import OrderItem from '../components/OrderItem';
-// import { getOrderDetails, payOrder, deliverOrder } from '../actions/orderActions';
-// import { ORDER_PAY_RESET, ORDER_DELIVER_RESET } from '../constants/orderConstants';
 
 const OrderScreen = ({ match, history }) => {
   const orderId = match.params.id;
-  // const [successPay, setSuccessPay] = useState(false);
-  // const [successDeliver, setSuccessDeliver] = useState(false);
-  // const [loadingDeliver, setLoadingDeliver] = useState(false);
-  // const [loadingPay, setLoadingPay] = useState(false);
-  // const [sdkReady, setSdkReady] = useState(false);
 
   const dispatch = useDispatch();
 
-  // const [order, setOrder] = useState(null);
-  //   const orderDetails = useSelector((state) => state.orderDetails);
-  //   const { order, loading, error } = orderDetails;
-
-  //   const orderPay = useSelector((state) => state.orderPay);
-  //   const { loading: loadingPay, success: successPay } = orderPay;
-
-  //   const orderDeliver = useSelector((state) => state.orderDeliver);
-  //   const { loading: loadingDeliver, success: successDeliver } = orderDeliver;
-
   const userInfo = useSelector((state) => state.user.userInfo);
-  // const { userInfo } = userLogin;
   const user = useSelector((state) => state.user.user);
 
   const orders = useSelector((state) => state.order.orders);
@@ -39,30 +19,15 @@ const OrderScreen = ({ match, history }) => {
   if (!order) {
     history.push('/');
   }
-  // const { order, loading, error } = orderDetail;
 
   useEffect(() => {
     if (!userInfo) {
       history.push('/login');
     }
-    // dispatch(getOrderDetailsAction(orderId));
   }, [dispatch, orderId]);
-
-  const deliverHandler = () => {
-    // dispatch(deliverOrder(order));
-  };
-
-  const getRandomNumber = () => {
-    return Math.floor(Math.random() * 10);
-  };
 
   return (
     <>
-      {/* {loading === true ? (
-        <Loader />
-      ) : error ? (
-        <Message variant='danger'>{error}</Message>
-      ) : ( */}
       <>
         <h1>Order - #{order.orderId}</h1>
         <hr></hr>
@@ -94,7 +59,6 @@ const OrderScreen = ({ match, history }) => {
                 <p>
                   <strong>Method: </strong>
                   CASH
-                  {/* {order.card.cardBrand.toUpperCase()} - **** **** **** {order.card.last4Digits} */}
                 </p>
                 {order.paid ? (
                   <Message variant='success'>Paid on {order.paymentDate}</Message>
@@ -102,12 +66,7 @@ const OrderScreen = ({ match, history }) => {
                   <Message variant='danger'>Not Paid</Message>
                 )}
 
-                <p>
-                  {/* <strong>Payment Receipt : </strong>
-                    <a href={order.paymentReceiptUrl} target='_blank'>
-                      {order.paymentReceiptUrl}
-                    </a> */}
-                </p>
+                <p></p>
               </ListGroup.Item>
 
               <ListGroup.Item>
@@ -154,20 +113,11 @@ const OrderScreen = ({ match, history }) => {
                     <Col>${order.totalPrice}</Col>
                   </Row>
                 </ListGroup.Item>
-                {/* {loadingDeliver && <Loader />} */}
-                {/* {userInfo && userInfo.isAdmin && order.isPaid && !order.isDelivered && (
-                  <ListGroup.Item>
-                    <Button type='button' className='btn btn-block' onClick={deliverHandler}>
-                      Mark As Delivered
-                    </Button>
-                  </ListGroup.Item>
-                )} */}
               </ListGroup>
             </Card>
           </Col>
         </Row>
       </>
-      {/* )} */}
     </>
   );
 };

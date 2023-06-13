@@ -2,11 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { Button, Col, Form, Row, Table } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { LinkContainer } from 'react-router-bootstrap';
-import { listMyOrdersAction } from '../actions/orderActions';
-import { getUserDetails, updateUserProfile } from '../actions/userActions';
-import FullPageLoader from '../components/FullPageLoader';
+
 import Message from '../components/Message';
-import { USER_UPDATE_PROFILE_RESET } from '../constants/userConstants';
+
 import { userActions } from '../reducers/user-slice';
 
 const ProfileScreen = ({ history }) => {

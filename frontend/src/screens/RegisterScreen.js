@@ -3,10 +3,9 @@ import { Link } from 'react-router-dom';
 import { Form, Button, Row, Col } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import Message from '../components/Message';
-import { register } from '../actions/userActions';
+
 import FormContainer from '../components/FormContainer';
-import FullPageLoader from '../components/FullPageLoader';
-import { USER_LOGIN_SUCCESS, USER_REGISTER_RESET, USER_REGISTER_SUCCESS } from '../constants/userConstants';
+
 import { userActions } from '../reducers/user-slice';
 import { emailRegex, passwordRegex } from '../constants/common';
 
@@ -20,15 +19,12 @@ const RegisterScreen = (props) => {
 
   const dispatch = useDispatch();
   const userInfo = useSelector((state) => state.user.userInfo);
-  // const userList = useSelector((state) => state.user.userList);
   const m = useSelector((state) => state.user.messageRegister);
-  // let { loading, error, userInfo } = userRegister;
 
   const redirect = props.location.search ? props.location.search.substring(props.location.search.indexOf('=') + 1) : '/';
 
   useEffect(() => {
     if (userInfo) {
-      // dispatch()
       props.history.push(redirect);
     }
   }, [props.history, userInfo, redirect, m]);
@@ -36,10 +32,8 @@ const RegisterScreen = (props) => {
   const registerHandler = async (e) => {
     setMessage(null);
     e.preventDefault();
-    //Register
     if (password !== confirmPassword) {
       setMessage('Passwords do not match');
-      // dispatch({ type: USER_REGISTER_RESET });
     } else if (!emailRegex.test(email)) {
       setMessage('Invalid Email');
     } else if (!passwordRegex.test(password)) {
@@ -59,9 +53,7 @@ const RegisterScreen = (props) => {
       };
       dispatch(userActions.register(details));
 
-      // if (m === '') {
       dispatch(userActions.login(login));
-      // }
     }
   };
 
@@ -70,8 +62,7 @@ const RegisterScreen = (props) => {
       <FormContainer>
         <h1>Sign Up</h1>
         {message && <Message variant='warning'>{message}</Message>}
-        {/* {m.length > 1 && <Message variant='warning'>{m}</Message>} */}
-        {/* {error && <Message variant='warning'>{JSON.stringify(error)}</Message>} */}
+
         <Form onSubmit={registerHandler}>
           <Form.Group controlId='userName'>
             <Form.Label className='font-italic'>Username</Form.Label>
@@ -124,7 +115,6 @@ const RegisterScreen = (props) => {
           </Col>
         </Row>
       </FormContainer>
-      {/* {loading && <FullPageLoader></FullPageLoader>} */}
     </div>
   );
 };

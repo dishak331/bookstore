@@ -3,10 +3,9 @@ import { Link, useHistory } from 'react-router-dom';
 import { Form, Button, Row, Col } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import Message from '../components/Message';
-import { login } from '../actions/userActions';
+
 import FormContainer from '../components/FormContainer';
-import FullPageLoader from '../components/FullPageLoader';
-import { USER_LOGIN_SUCCESS } from '../constants/userConstants';
+
 import { userActions } from '../reducers/user-slice';
 import { emailRegex, passwordRegex } from '../constants/common';
 

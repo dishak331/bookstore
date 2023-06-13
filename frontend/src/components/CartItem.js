@@ -1,33 +1,17 @@
 import React, { useEffect } from 'react';
-import { BACKEND_API_GATEWAY_URL } from '../constants/appConstants';
+
 import { useDispatch, useSelector } from 'react-redux';
-import { Row, Col, ListGroup, Image, Form, Button, Card } from 'react-bootstrap';
+import { Row, Col, ListGroup, Image, Form, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import { removeFromCartAction } from '../actions/cartActions.js';
-import { getProductDetailApi } from '../service/RestApiCalls.js';
-import FullPageLoader from './FullPageLoader.js';
-import Message from '../components/Message';
-import { useState } from 'react';
-import { getErrorMessage } from '../service/CommonUtils';
+
 import { cartActions } from '../reducers/cart-slice';
 
 const CartItem = ({ item, addToCart }) => {
-  // const [product, setProduct] = useState('');
-  // const [error, setError] = useState('');
-  // const [loading, setLoading] = useState(false);
   const products = useSelector((state) => state.product.products);
   const product = products.find((prod) => prod.productId == item.productId);
   const dispatch = useDispatch();
 
-  useEffect(async () => {
-    // try {
-    //   const productDetail = await getProductDetailApi(item.productId);
-    //   setProduct(productDetail);
-    //   setLoading(false);
-    // } catch (err) {
-    //   setError(getErrorMessage(err));
-    // }
-  }, []);
+  useEffect(() => {}, []);
 
   const removeFromCartHandler = (cartItemId) => {
     dispatch(cartActions.removeFromCart(cartItemId));
@@ -35,13 +19,10 @@ const CartItem = ({ item, addToCart }) => {
 
   return (
     <>
-      {/* {error ? (
-        <Message variant='danger'> {JSON.stringify(error.message)}</Message>
-      ) : ( */}
       <ListGroup.Item key={item.productId}>
         <Row>
           <Col md={2}>
-            <Image src={require(`../assets/images/${product.imageId}`)} alt={item.productName} fluid rounded></Image>
+            <Image src={product.imageId} alt={item.productName} fluid rounded></Image>
           </Col>
           <Col md={3} className='pt-4'>
             <Link to={`/product/${item.productId}`}>{item.productName}</Link>
@@ -78,8 +59,6 @@ const CartItem = ({ item, addToCart }) => {
           </Col>
         </Row>
       </ListGroup.Item>
-      {/* )} */}
-      {/* {loading && <FullPageLoader></FullPageLoader>} */}
     </>
   );
 };

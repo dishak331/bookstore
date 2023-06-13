@@ -1,41 +1,22 @@
 import React, { useEffect } from 'react';
-import { BACKEND_API_GATEWAY_URL } from '../constants/appConstants';
+
 import { Col, Image, ListGroup, Row } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import Message from './Message';
-import { getProductDetailApi } from '../service/RestApiCalls.js';
-import { useState } from 'react';
-import { getErrorMessage } from '../service/CommonUtils';
-import Loader from './Loader';
+
 import { useSelector } from 'react-redux';
 
 const OrderItem = ({ item }) => {
-  // const [product, setProduct] = useState('');
-  // const [error, setError] = useState('');
-  // const [loading, setLoading] = useState(false);
   const products = useSelector((state) => state.product.products);
   const product = products.find((prod) => prod.productId == item.productId);
 
-  useEffect(async () => {
-    // try {
-    //   const productDetail = await getProductDetailApi(item.productId);
-    //   setProduct(productDetail);
-    //   setLoading(false);
-    // } catch (err) {
-    //   setError(getErrorMessage(err));
-    // }
-  }, []);
+  useEffect(async () => {}, []);
 
   return (
     <>
-      {/* {error && <Message variant='danger'> {JSON.stringify(error.message)}</Message>} */}
-      {/* {loading ? (
-        <Loader></Loader> */}
-      {/* // ) : ( */}
       <ListGroup.Item key={item.productId}>
         <Row>
           <Col md={2}>
-            <Image src={require(`../assets/images/${product.imageId}`)} alt={item.productName} fluid rounded></Image>
+            <Image src={product.imageId} alt={item.productName} fluid rounded></Image>
           </Col>
           <Col md={3} className='pt-4'>
             <Link to={`/product/${item.productId}`}>{product.productName}</Link>
@@ -51,7 +32,6 @@ const OrderItem = ({ item }) => {
           </Col>
         </Row>
       </ListGroup.Item>
-      {/* )} */}
     </>
   );
 };

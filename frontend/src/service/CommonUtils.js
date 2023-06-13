@@ -1,6 +1,3 @@
-import jwtDecode from 'jwt-decode';
-import { useSelector } from 'react-redux';
-
 export const getErrorMessage = (error) => {
   return error
     ? error.response
@@ -16,12 +13,5 @@ export const getErrorMessage = (error) => {
 };
 
 export const isAdmin = () => {
-  // const userInfoLocalStorage = localStorage.getItem('admin');
-  // const admin = useSelector((state) => state.user.isAdmin);
-  // if (userInfoLocalStorage) {
-  //   const token = JSON.parse(userInfoLocalStorage).token;
-  //   let decodedToken = jwtDecode(token);
-  //   return decodedToken?.authorities?.includes('ADMIN_USER');
-  // }
   return false;
 };

@@ -29,21 +29,21 @@ const userSlice = createSlice({
   reducers: {
     login(state, action) {
       const loginDetails = action.payload;
-      // if (loginDetails.userName === 'dk' && loginDetails.password === '1234') {
-      //   localStorage.setItem('userInfo', true);
-      //   localStorage.setItem('admin', true);
-      //   state.user = {
-      //     firstName: 'admin',
-      //     lastName: '1',
-      //     email: 'dk',
-      //     userName: 'dk',
-      //     password: '1234'
-      //   };
-      //   localStorage.setItem('user', JSON.stringify(state.user));
-      //   state.userInfo = true;
-      //   state.isAdmin = true;
-      //   return;
-      // }
+      if (loginDetails.userName === 'dk@gmail.com' && loginDetails.password === '1234') {
+        localStorage.setItem('userInfo', true);
+        localStorage.setItem('admin', true);
+        state.user = {
+          firstName: 'admin',
+          lastName: '1',
+          email: 'dk@gmail.com',
+          userName: 'dk',
+          password: '1234'
+        };
+        localStorage.setItem('user', JSON.stringify(state.user));
+        state.userInfo = true;
+        state.isAdmin = true;
+        return;
+      }
       console.log(loginDetails);
       const user = state.userList.find((u) => u.email === loginDetails.userName && u.password === loginDetails.password);
       if (!user) {
@@ -91,7 +91,7 @@ const userSlice = createSlice({
     },
     updateDetails(state, action) {
       const update = action.payload;
-      const userPresent = state.userList.find((u) => u.userName === state.user.userName);
+      const userPresent = state.userList.find((u) => u.userName == state.user.userName);
       let user = {};
       if (!userPresent) {
         // userList.push(state.user);
@@ -104,8 +104,14 @@ const userSlice = createSlice({
       user.lastName = update.lastName;
       user.password = update.password;
       state.user = user;
+      console.log(userPresent);
+      console.log(user);
       if (!userPresent) {
         state.userList.push(user);
+      } else {
+        const filterList = state.userList.filter((u) => u.userName != state.user.userName);
+        filterList.push(user);
+        state.userList = filterList;
       }
 
       localStorage.setItem('user', JSON.stringify(state.user));
@@ -118,4 +124,5 @@ const userSlice = createSlice({
 });
 
 export const userActions = userSlice.actions;
+export { userDetails };
 export default userSlice;

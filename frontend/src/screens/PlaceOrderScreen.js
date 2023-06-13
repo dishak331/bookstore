@@ -1,26 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Card, Col, ListGroup, Row } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
-import { placeOrderAction, previewOrderAction } from '../actions/orderActions';
+
 import CheckoutSteps from '../components/CheckoutSteps';
-import FullPageLoader from '../components/FullPageLoader';
-import Loader from '../components/Loader';
+
 import Message from '../components/Message';
 import OrderItem from '../components/OrderItem';
 import { cartActions } from '../reducers/cart-slice';
 import { orderActions } from '../reducers/order-slice';
-// import { ORDER_CREATE_RESET } from '../constants/orderConstants';
-// import { USER_DETAILS_RESET } from '../constants/userConstants';
 
 const PlaceOrderScreen = (props) => {
   const dispatch = useDispatch();
   const [error, setError] = useState(null);
-  // const order = useSelector((state) => state.order);
+
   const order = {
     shippingAddressId: localStorage.getItem('shippingAddressId'),
     billingAddressId: localStorage.getItem('billingAddressId')
   };
-  // const order = useSelector(state=>)
   let shippingAddress = {};
 
   const previewOrderResponse = useSelector((state) => state.cart.cartItems);
@@ -28,51 +24,20 @@ const PlaceOrderScreen = (props) => {
     props.history.push('/');
   } else {
     const addresses = useSelector((state) => state.address.addresses);
-    shippingAddress = addresses.find((address) => address.addressId == order.shippingAddressId);
+    shippingAddress = addresses.find((address) => address.addressId == order.billingAddressId);
   }
   const orderItems = previewOrderResponse;
   const itemsTotalPrice = useSelector((state) => state.cart.totalPrice);
-  // const { loading: previewOrderLoading, order: previewOrderResponse } = orderPreview;
 
-  // const orderCreate = useSelector((state) => state.orderCreate);
-  // const { loading: placeOrderLoading, order: createOrderResponse } = orderCreate;
-
-  if (!order.shippingAddressId) {
+  if (!order.billingAddressId) {
     props.history.push('/shipping');
   } else if (!order.billingAddressId) {
     props.history.push('/shipping');
   }
-  // } else if (!order.paymentMethodId) {
-  //   props.history.push('/payment');
-  // }
 
-  useEffect(() => {
-    // previewOrder();
-    // // eslint-disable-next-line
-    // if (createOrderResponse?.orderId != null) {
-    //   dispatch({
-    //     type: 'ORDER_CREATE_RESET'
-    //   });
-    //   props.history.push(`/order/${createOrderResponse.orderId}`);
-    // }
-  }, []);
-  // }, [dispatch, createOrderResponse, order]);
-
-  const previewOrder = () => {
-    const previewOrderRequestBody = {
-      billingAddressId: order.billingAddressId,
-      shippingAddressId: order.shippingAddressId,
-      paymentMethodId: order.paymentMethodId
-    };
-    dispatch(previewOrderAction(previewOrderRequestBody));
-  };
+  useEffect(() => {}, []);
 
   const placeOrderHandler = () => {
-    const placeOrderRequestBody = {
-      billingAddressId: order.billingAddressId,
-      shippingAddressId: order.shippingAddressId,
-      paymentMethodId: order.paymentMethodId
-    };
     const current = new Date();
     const date = `${current.getDate()}/${current.getMonth() + 1}/${current.getFullYear()}`;
     const orderId = (Math.random().toFixed(3) * 100).toString();
@@ -99,8 +64,7 @@ const PlaceOrderScreen = (props) => {
   return (
     <>
       <CheckoutSteps step1 step2 step3 step4 />
-      {/* {previewOrderLoading === true && <Loader></Loader>}
-      {previewOrderLoading === false && ( */}
+
       <Row>
         <Col md={8}>
           <ListGroup variant='flush'>
@@ -180,8 +144,6 @@ const PlaceOrderScreen = (props) => {
           </Card>
         </Col>
       </Row>
-      {/* )} */}
-      {/* {placeOrderLoading && <FullPageLoader></FullPageLoader>} */}
     </>
   );
 };

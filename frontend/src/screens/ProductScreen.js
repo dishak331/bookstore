@@ -1,18 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { BACKEND_API_GATEWAY_URL } from '../constants/appConstants';
+
 import { Button, Card, Col, Form, Image, ListGroup, ListGroupItem, Row } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
-import FullPageLoader from '../components/FullPageLoader';
-import { createProductReviewAction, listProductDetailsAction, listProductReviewsAction, getImageAction } from '../actions/productActions';
-import Loader from '../components/Loader';
+
 import Message from '../components/Message';
 import Rating from '../components/Rating';
-import { getImageApi, getProductDetailApi } from '../service/RestApiCalls';
 
-import { PRODUCT_CREATE_REVIEW_SUCCESS, PRODUCT_DETAILS_SUCCESS, PRODUCT_REVIEWS_SUCCESS } from '../constants/productConstants';
 import { productAction } from '../reducers/product-slice';
 import { cartActions } from '../reducers/cart-slice';
+import { userDetails } from '../reducers/user-slice';
+import { history } from '../App';
 
 const ProductScreen = (props) => {
   const [qty, setQty] = useState(1);
@@ -30,6 +28,7 @@ const ProductScreen = (props) => {
   // const product = useSelector((state) => state.productDetails.product);
   const products = useSelector((state) => state.product.products);
   const cart = useSelector((state) => state.cart.cartItems);
+  const admin = useSelector((state) => state.user.isAdmin);
   // const reviews = useSelector((state) => state.productReviews.reviews)[id];
   // console.log(reviews);
 
@@ -42,15 +41,33 @@ const ProductScreen = (props) => {
 
   const userLogin = useSelector((state) => state.user);
   const { userInfo } = userLogin;
-  const product = products.find((prod) => prod.productId == id);
-  const inCart = cart.find((prod) => prod.productId == id);
-  let imageId = product.imageId;
-  let reviews = product.reviews;
+  // const [product, setProduct] = useState(null);
+  const product = products.find((p) => p.productId == id);
+  if (!product) {
+    return (
+      <div className='text-center'>
+        <Message>No Product Found</Message>
+      </div>
+    );
+  }
+  // const [reviews, setReviews] = useState([]);
+  // let imageId = product.imageId;
+  let reviews = [];
+  if (product) {
+    reviews = product.reviews;
+  }
   console.log(rating);
   // const productReviewCreate = useSelector((state) => state.productReviewCreate);
   // const { success: successProductReview, loading: loadingProductReview, error: errorProductReview } = productReviewCreate;
 
   useEffect(() => {
+    // console.log(product);
+    // console.log('jrhv');
+    // if (!prod) {
+    //   return;
+    // }
+    // setProduct(prod);
+    // setReviews(product.reviews);
     // console.log('////');
     // reviews = product.reviews;
     // console.log(reviews);
@@ -74,8 +91,8 @@ const ProductScreen = (props) => {
     // });
     // }
   }, []);
-
-  console.log(product);
+  const inCart = cart.find((prod) => prod.productId == id);
+  // console.log(product);
 
   const addToCartHandler = () => {
     // props.history.push(`/cart/${props.match.params.id}?qty=${qty}`);
@@ -94,7 +111,7 @@ const ProductScreen = (props) => {
   const createProductReviewHandler = (e) => {
     e.preventDefault();
     const newReview = {
-      username: 'Disha',
+      username: userDetails.firstName + ' ' + userDetails.lastName,
       reviewMessage: reviewMessage,
       ratingValue: rating,
       reviewId: Math.random().toString()
@@ -105,27 +122,22 @@ const ProductScreen = (props) => {
         newReview: newReview
       })
     );
-    // dispatch({
-    //   type: PRODUCT_CREATE_REVIEW_SUCCESS,
-    //   payload: {
-    //     id: id,
-    //     newReview: newReview
-    //   }
-    // });
-    // dispatch(
-    //   createProductReviewAction({
-    //     productId: props.match.params.id,
-    //     ratingValue: rating,
-    //     reviewMessage: reviewMessage
-    //   })
-    // );
   };
 
   return (
     <>
-      <Link className='btn btn-dark my-3' to='/'>
-        Go Back
-      </Link>
+      <Row>
+        <Link className='btn btn-dark my-3' to={'..'}>
+          Go Back
+        </Link>
+        {admin && (
+          <Link to={`/admin/editBook/${product.productId}`}>
+            <Button onClick={() => {}} className='btn my-3 ml-3' variant='warning' type='button'>
+              Edit Book
+            </Button>
+          </Link>
+        )}
+      </Row>
 
       {/* {error ? (
         <Message variant='danger'></Message>
@@ -136,12 +148,7 @@ const ProductScreen = (props) => {
           <Col md={6}>
             {true && (
               <div style={{ minWidth: '100%', height: '400px' }}>
-                <Image
-                  style={{ height: '100%', width: '100%' }}
-                  src={require(`../assets/images/${imageId}`)}
-                  alt={product.productName}
-                  fluid
-                ></Image>
+                <Image style={{ height: '100%', width: '100%' }} src={product.imageId} alt={product.productName} fluid></Image>
               </div>
             )}
           </Col>
@@ -238,11 +245,11 @@ const ProductScreen = (props) => {
         >
           <Col md={6}>
             <h2>Reviews</h2>
-            {reviews?.length === 0 && <Message>No Reviews</Message>}
+            {{ reviews }?.length === 0 && <Message>No Reviews</Message>}
             <ListGroup variant='flush'>
               {reviews?.map((review) => (
                 <ListGroup.Item key={review.reviewId}>
-                  <strong>{review.userName}</strong>
+                  <strong>{review.username}</strong>
                   <Rating value={review.ratingValue} />
                   {/* <p>{review.created_at.substring(0, 10)}</p> */}
                   <p>{review.reviewMessage}</p>

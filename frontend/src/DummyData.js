@@ -1,7 +1,7 @@
 export const products = [
   {
     productId: 1,
-    imageId: '1.jpg',
+    imageId: 'https://kbimages1-a.akamaihd.net/5967e7fb-edc8-403b-9989-f8aab7b3ed89/1200/1200/False/the-alchemist-38.jpg',
     averageRating: 5,
     noOfRatings: 2,
     price: 13,
@@ -25,7 +25,7 @@ export const products = [
   },
   {
     productId: 2,
-    imageId: '2.jpg',
+    imageId: 'https://m.media-amazon.com/images/I/51lcTCxmDfL._AC_UF1000,1000_QL80_.jpg',
     averageRating: 5,
     noOfRatings: 2,
     price: 12,
@@ -46,151 +46,151 @@ export const products = [
         reviewMessage: 'Enjoyed it alot'
       }
     ]
-  },
-  {
-    productId: 3,
-    imageId: '3.jpg',
-    averageRating: 5,
-    noOfRatings: 2,
-    price: 19,
-    productName: 'Pride and Prejudice',
-    availableItemCount: 3,
-    description: 'It is a fantastic book',
-    reviews: [
-      {
-        reviewId: 'r1',
-        username: 'disha',
-        ratingValue: 5,
-        reviewMessage: 'Enjoyed it alot'
-      },
-      {
-        reviewId: 'r1',
-        username: 'disha',
-        ratingValue: 5,
-        reviewMessage: 'Enjoyed it alot'
-      }
-    ]
-  },
-  {
-    productId: 4,
-    imageId: '4.jpg',
-    averageRating: 5,
-    noOfRatings: 2,
-    price: 12,
-    productName: 'The Great Gatsby',
-    availableItemCount: 3,
-    description: 'It is a fantastic book',
-    reviews: [
-      {
-        reviewId: 'r1',
-        username: 'disha',
-        ratingValue: 5,
-        reviewMessage: 'Enjoyed it alot'
-      },
-      {
-        reviewId: 'r1',
-        username: 'disha',
-        ratingValue: 5,
-        reviewMessage: 'Enjoyed it alot'
-      }
-    ]
-  },
-  {
-    productId: 5,
-    imageId: '6.jpg',
-    averageRating: 5,
-    noOfRatings: 2,
-    price: 10,
-    productName: '52 Small Changes for the Mind',
-    availableItemCount: 3,
-    description: 'It is a fantastic book',
-    reviews: [
-      {
-        reviewId: 'r1',
-        username: 'disha',
-        ratingValue: 5,
-        reviewMessage: 'Enjoyed it alot'
-      },
-      {
-        reviewId: 'r1',
-        username: 'disha',
-        ratingValue: 5,
-        reviewMessage: 'Enjoyed it alot'
-      }
-    ]
-  },
-  {
-    productId: 7,
-    imageId: '7.jpg',
-    averageRating: 5,
-    noOfRatings: 2,
-    price: 22,
-    productName: 'The Belated Bachelor Party',
-    availableItemCount: 3,
-    description: 'It is a fantastic book',
-    reviews: [
-      {
-        reviewId: 'r1',
-        username: 'disha',
-        ratingValue: 5,
-        reviewMessage: 'Enjoyed it alot'
-      },
-      {
-        reviewId: 'r1',
-        username: 'disha',
-        ratingValue: 5,
-        reviewMessage: 'Enjoyed it alot'
-      }
-    ]
-  },
-  {
-    productId: 8,
-    imageId: '8.jpg',
-    averageRating: 5,
-    noOfRatings: 2,
-    price: 32,
-    productName: 'One Arranged Murder',
-    availableItemCount: 3,
-    description: 'It is a fantastic book',
-    reviews: [
-      {
-        reviewId: 'r1',
-        username: 'disha',
-        ratingValue: 5,
-        reviewMessage: 'Enjoyed it alot'
-      },
-      {
-        reviewId: 'r1',
-        username: 'disha',
-        ratingValue: 5,
-        reviewMessage: 'Enjoyed it alot'
-      }
-    ]
-  },
-  {
-    productId: 9,
-    imageId: '9.jpg',
-    averageRating: 5,
-    noOfRatings: 2,
-    price: 25,
-    productName: 'The Business Book',
-    availableItemCount: 3,
-    description: 'It is a fantastic book',
-    reviews: [
-      {
-        reviewId: 'r1',
-        username: 'disha',
-        ratingValue: 5,
-        reviewMessage: 'Enjoyed it alot'
-      },
-      {
-        reviewId: 'r1',
-        username: 'disha',
-        ratingValue: 5,
-        reviewMessage: 'Enjoyed it alot'
-      }
-    ]
   }
+  // {
+  //   productId: 3,
+  //   imageId: '3.jpg',
+  //   averageRating: 5,
+  //   noOfRatings: 2,
+  //   price: 19,
+  //   productName: 'Pride and Prejudice',
+  //   availableItemCount: 3,
+  //   description: 'It is a fantastic book',
+  //   reviews: [
+  //     {
+  //       reviewId: 'r1',
+  //       username: 'disha',
+  //       ratingValue: 5,
+  //       reviewMessage: 'Enjoyed it alot'
+  //     },
+  //     {
+  //       reviewId: 'r1',
+  //       username: 'disha',
+  //       ratingValue: 5,
+  //       reviewMessage: 'Enjoyed it alot'
+  //     }
+  //   ]
+  // },
+  // {
+  //   productId: 4,
+  //   imageId: '4.jpg',
+  //   averageRating: 5,
+  //   noOfRatings: 2,
+  //   price: 12,
+  //   productName: 'The Great Gatsby',
+  //   availableItemCount: 3,
+  //   description: 'It is a fantastic book',
+  //   reviews: [
+  //     {
+  //       reviewId: 'r1',
+  //       username: 'disha',
+  //       ratingValue: 5,
+  //       reviewMessage: 'Enjoyed it alot'
+  //     },
+  //     {
+  //       reviewId: 'r1',
+  //       username: 'disha',
+  //       ratingValue: 5,
+  //       reviewMessage: 'Enjoyed it alot'
+  //     }
+  //   ]
+  // },
+  // {
+  //   productId: 5,
+  //   imageId: '6.jpg',
+  //   averageRating: 5,
+  //   noOfRatings: 2,
+  //   price: 10,
+  //   productName: '52 Small Changes for the Mind',
+  //   availableItemCount: 3,
+  //   description: 'It is a fantastic book',
+  //   reviews: [
+  //     {
+  //       reviewId: 'r1',
+  //       username: 'disha',
+  //       ratingValue: 5,
+  //       reviewMessage: 'Enjoyed it alot'
+  //     },
+  //     {
+  //       reviewId: 'r1',
+  //       username: 'disha',
+  //       ratingValue: 5,
+  //       reviewMessage: 'Enjoyed it alot'
+  //     }
+  //   ]
+  // },
+  // {
+  //   productId: 7,
+  //   imageId: '7.jpg',
+  //   averageRating: 5,
+  //   noOfRatings: 2,
+  //   price: 22,
+  //   productName: 'The Belated Bachelor Party',
+  //   availableItemCount: 3,
+  //   description: 'It is a fantastic book',
+  //   reviews: [
+  //     {
+  //       reviewId: 'r1',
+  //       username: 'disha',
+  //       ratingValue: 5,
+  //       reviewMessage: 'Enjoyed it alot'
+  //     },
+  //     {
+  //       reviewId: 'r1',
+  //       username: 'disha',
+  //       ratingValue: 5,
+  //       reviewMessage: 'Enjoyed it alot'
+  //     }
+  //   ]
+  // },
+  // {
+  //   productId: 8,
+  //   imageId: '8.jpg',
+  //   averageRating: 5,
+  //   noOfRatings: 2,
+  //   price: 32,
+  //   productName: 'One Arranged Murder',
+  //   availableItemCount: 3,
+  //   description: 'It is a fantastic book',
+  //   reviews: [
+  //     {
+  //       reviewId: 'r1',
+  //       username: 'disha',
+  //       ratingValue: 5,
+  //       reviewMessage: 'Enjoyed it alot'
+  //     },
+  //     {
+  //       reviewId: 'r1',
+  //       username: 'disha',
+  //       ratingValue: 5,
+  //       reviewMessage: 'Enjoyed it alot'
+  //     }
+  //   ]
+  // },
+  // {
+  //   productId: 9,
+  //   imageId: '9.jpg',
+  //   averageRating: 5,
+  //   noOfRatings: 2,
+  //   price: 25,
+  //   productName: 'The Business Book',
+  //   availableItemCount: 3,
+  //   description: 'It is a fantastic book',
+  //   reviews: [
+  //     {
+  //       reviewId: 'r1',
+  //       username: 'disha',
+  //       ratingValue: 5,
+  //       reviewMessage: 'Enjoyed it alot'
+  //     },
+  //     {
+  //       reviewId: 'r1',
+  //       username: 'disha',
+  //       ratingValue: 5,
+  //       reviewMessage: 'Enjoyed it alot'
+  //     }
+  //   ]
+  // }
 ];
 
 export const reviews = {

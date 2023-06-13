@@ -4,7 +4,6 @@ import { Table, Button } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import Message from '../components/Message';
 import Loader from '../components/Loader';
-import { listOrdersAdmin } from '../actions/orderActions';
 
 const OrderListScreen = ({ history }) => {
   const dispatch = useDispatch();
@@ -12,9 +11,9 @@ const OrderListScreen = ({ history }) => {
   const orderList = useSelector((state) => state.orderListAll);
   const { loading, error, orders } = orderList;
 
-  useEffect(() => {
-    dispatch(listOrdersAdmin());
-  }, [dispatch]);
+  // useEffect(() => {
+  //   dispatch(listOrdersAdmin());
+  // }, [dispatch]);
 
   return (
     <>

@@ -1,23 +1,16 @@
 import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { Row, Col, ListGroup, Image, Form, Button, Card } from 'react-bootstrap';
+import { Row, Col, ListGroup, Button, Card } from 'react-bootstrap';
 import Message from '../components/Message';
 import CartItem from '../components/CartItem';
-import { addToCartAction, getCartDetailsAction } from '../actions/cartActions';
-import FullPageLoader from '../components/FullPageLoader';
 import { LinkContainer } from 'react-router-bootstrap';
 import { cartActions } from '../reducers/cart-slice';
 
 const CartScreen = (props) => {
-  // const productId = props.match.params.id;
-  // const qty = props.location.search ? Number(props.location.search.split('=')[1]) : 1;
   const dispatch = useDispatch();
   const userLogin = useSelector((state) => state.user);
   const cart = useSelector((state) => state.cart);
-  // const { cart } = cartState;
-  // let loading = cartState.loading;
-  // let error = cartState.error;
   const { userInfo } = userLogin;
   const redirect = props.location.pathname;
 
@@ -26,11 +19,6 @@ const CartScreen = (props) => {
       props.history.push(`/login?redirect=${redirect}`);
       return;
     }
-    // if (productId) {
-    //   addToCart();
-    // } else {
-    //   getCartDetail();
-    // }
   }, [userInfo]);
 
   const addToCart = (item, q) => {
@@ -43,7 +31,6 @@ const CartScreen = (props) => {
         quantity: q
       })
     );
-    // dispatch(addToCartAction(addToCartRequestBody));
   };
 
   const checkoutHandler = () => {
@@ -52,9 +39,6 @@ const CartScreen = (props) => {
 
   return (
     <>
-      {/* {error ? (
-        <Message variant='danger'> {JSON.stringify(error.message)}</Message>
-      ) : ( */}
       <>
         <Row>
           <h1>Shopping Cart</h1>
@@ -103,8 +87,6 @@ const CartScreen = (props) => {
           </Col>
         </Row>
       </>
-      {/* )} */}
-      {/* {loading && <FullPageLoader></FullPageLoader>} */}
     </>
   );
 };

@@ -1,8 +1,8 @@
 import React from 'react';
-import { BACKEND_API_GATEWAY_URL } from '../constants/appConstants';
+
 import { Card } from 'react-bootstrap';
 import Rating from './Rating';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router-dom/cjs/react-router-dom.min';
 
 const Product = (props) => {
   const product = props.product;
@@ -10,13 +10,7 @@ const Product = (props) => {
     <>
       <Card className='my-3 rounded product' style={{ height: '400px' }}>
         <Link to={`/product/${product.productId}`}>
-          {/* <Link to='/'> */}
-          <Card.Img
-            // src={`${BACKEND_API_GATEWAY_URL}/api/catalog/image/${product?.imageId}`}
-            src={require('../assets/images/' + product.imageId)}
-            variant='top'
-            style={{ height: '250px' }}
-          ></Card.Img>
+          <Card.Img src={product.imageId} variant='top' style={{ height: '250px' }}></Card.Img>
         </Link>
         <Card.Body>
           <Link to={`/product/${product.productId}`}>
