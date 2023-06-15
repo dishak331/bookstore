@@ -17,9 +17,20 @@ p {
   font-family: sans-serif !important;
 }
 
+
+
 footer {
-  background-color: #f0e8a1;
+  background-color: transparent;
   opacity: 0.7;
+  bottom: 0 !important;
+  position: fixed;
+  width: 100%;
+  /* min-height: 10px; */
+  height:1px !important;
+}
+
+#body {
+  margin-bottom: 50px;
 }
 
 .bookstore-brand {

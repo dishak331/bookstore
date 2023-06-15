@@ -18,8 +18,9 @@ const userInitial = {
   user: userDetails,
   userList: [],
   messageLogin: '',
-  messageRegister: 'x',
+  messageRegister: '',
   updateSuccess: false,
+  registerSuccess: false,
   isAdmin: admin
 };
 
@@ -29,7 +30,8 @@ const userSlice = createSlice({
   reducers: {
     login(state, action) {
       const loginDetails = action.payload;
-      if (loginDetails.userName === 'dk@gmail.com' && loginDetails.password === '1234') {
+
+      if (!loginDetails.register && loginDetails.userName === 'dk@gmail.com' && loginDetails.password === '1234') {
         localStorage.setItem('userInfo', true);
         localStorage.setItem('admin', true);
         state.user = {
@@ -47,22 +49,31 @@ const userSlice = createSlice({
       console.log(loginDetails);
       const user = state.userList.find((u) => u.email === loginDetails.userName && u.password === loginDetails.password);
       if (!user) {
-        state.messageLogin = 'Incorrect username or password';
+        if (!loginDetails.register) {
+          state.messageLogin = 'Incorrect username or password';
+        }
         return;
       }
-      state.messageRegister = 'x';
+
+      if (user && loginDetails.register && state.messageRegister.length > 0) {
+        return;
+      }
+
       state.user = user;
       state.messageLogin = '';
+      // if(state.messageRegister.length===0)
       localStorage.setItem('userInfo', true);
       console.log(state.user);
       localStorage.setItem('user', JSON.stringify(state.user));
       state.userInfo = true;
+      state.messageRegister = '';
     },
     logout(state) {
       localStorage.removeItem('userInfo');
       localStorage.removeItem('user');
       localStorage.removeItem('admin');
       state.user = uInitial;
+      state.registerSuccess = false;
       state.userInfo = false;
       state.isAdmin = false;
     },
@@ -77,6 +88,7 @@ const userSlice = createSlice({
       };
 
       const user = state.userList.find((u) => u.userName === registerDetails.userName || u.email === registerDetails.email);
+      console.log(user);
       if (!user) {
         state.messageRegister = '';
         state.userList.push(details);
@@ -84,10 +96,13 @@ const userSlice = createSlice({
         //   userName: registerDetails.email,
         //   password: registerDetails.password
         // };
-        // userSlice.caseReducers.login(state, login);
+        state.registerSuccess = true;
+        // login(state, login);
         return;
       }
+      state.registerSuccess = false;
       state.messageRegister = 'Username or email address already exists.';
+      console.log(state.messageRegister);
     },
     updateDetails(state, action) {
       const update = action.payload;
@@ -116,6 +131,29 @@ const userSlice = createSlice({
 
       localStorage.setItem('user', JSON.stringify(state.user));
       state.updateSuccess = true;
+    },
+    setMessage(state, action) {
+      state.messageRegister = action.payload.message;
+      console.log(state.messageRegister);
+    },
+    loggedInError(state, action) {
+      const message = action.payload.message;
+      state.messageLogin = message;
+    },
+    loggedIn(state, action) {
+      state.user = action.payload.user;
+      if (state.user.userName === 'dk@gmail.com' && state.user.password === '1234') {
+        localStorage.setItem('userInfo', true);
+        localStorage.setItem('admin', true);
+      }
+
+      state.messageRegister = 'x';
+      state.user = user;
+      state.messageLogin = '';
+      localStorage.setItem('userInfo', true);
+      console.log(state.user);
+      localStorage.setItem('user', JSON.stringify(state.user));
+      state.userInfo = true;
     },
     setSuccessFalse(state) {
       state.updateSuccess = false;

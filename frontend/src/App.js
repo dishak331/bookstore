@@ -31,7 +31,7 @@ function App() {
     <BrowserRouter history={history}>
       <Header></Header>
       <main className='py-3'>
-        <Container>
+        <Container id='body'>
           <Switch>
             <Route path='/order/:id' component={OrderScreen} />
             <Route path='/login' component={LoginScreen}></Route>

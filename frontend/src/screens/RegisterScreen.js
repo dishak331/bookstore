@@ -1,13 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { Form, Button, Row, Col } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import Message from '../components/Message';
 
 import FormContainer from '../components/FormContainer';
-
+import FullPageLoader from '../components/FullPageLoader';
 import { userActions } from '../reducers/user-slice';
 import { emailRegex, passwordRegex } from '../constants/common';
+import { registerUserData } from '../actions/user-actions';
 
 const RegisterScreen = (props) => {
   const [userName, setUserName] = useState('');
@@ -16,18 +17,33 @@ const RegisterScreen = (props) => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setconfirmPassword] = useState('');
   const [message, setMessage] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const dispatch = useDispatch();
   const userInfo = useSelector((state) => state.user.userInfo);
   const m = useSelector((state) => state.user.messageRegister);
+  const success = useSelector((state) => state.user.registerSuccess);
+  // const counterForMessage = 0;
+  const isInitialMount = useRef(true);
 
-  const redirect = props.location.search ? props.location.search.substring(props.location.search.indexOf('=') + 1) : '/';
+  const redirect = props.location.search ? props.location.search.substring(props.location.search.indexOf('=') + 1) : '/login';
 
   useEffect(() => {
+    // if (m.length == 0 && ) {
+    //   login();
+    //   props.history.push(redirect);
+    // }
+    // if (isInitialMount.current) {
+    //   isInitialMount.current = false;
+    // } else {
+    //   console.log(m);
+    //   if (m.length === 0) {
     if (userInfo) {
       props.history.push(redirect);
+
+      // counterForMessage++;
     }
-  }, [props.history, userInfo, redirect, m]);
+  }, [userInfo, props.history, redirect]);
 
   const registerHandler = async (e) => {
     setMessage(null);
@@ -40,6 +56,7 @@ const RegisterScreen = (props) => {
       setMessage('Password must be more than 8 characters.\nIt must contain a number, string and special character');
     } else {
       setMessage(null);
+      // setLoading(true);
       const details = {
         userName: userName,
         firstName: firstName,
@@ -47,13 +64,20 @@ const RegisterScreen = (props) => {
         email: email
       };
 
-      const login = {
-        userName: email,
-        password: password
-      };
+      // dispatch(registerUserData(details));
+      // setLoading(false);
       dispatch(userActions.register(details));
+      // props.history.push('/login');
+      // counterForMessage = counterForMessage + 1;
+      const data = {
+        userName: email,
+        password: password,
+        register: true
+      };
 
-      dispatch(userActions.login(login));
+      dispatch(userActions.login(data));
+      // setMessage(null);
+      // console.log(`////${m}`);
     }
   };
 
@@ -61,7 +85,8 @@ const RegisterScreen = (props) => {
     <div>
       <FormContainer>
         <h1>Sign Up</h1>
-        {message && <Message variant='warning'>{message}</Message>}
+        {message && m.length === 0 && <Message variant='warning'>{message}</Message>}
+        {m.length > 0 && <Message variant='warning'>{m}</Message>}
 
         <Form onSubmit={registerHandler}>
           <Form.Group controlId='userName'>
@@ -115,6 +140,7 @@ const RegisterScreen = (props) => {
           </Col>
         </Row>
       </FormContainer>
+      {loading && <FullPageLoader></FullPageLoader>}
     </div>
   );
 };

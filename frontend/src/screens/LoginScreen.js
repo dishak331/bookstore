@@ -91,7 +91,7 @@ const LoginScreen = (props) => {
         <Row className='py-3'>
           <Col>
             New Customer?{' '}
-            <Link to={redirect ? `/register?redirect=${redirect}` : '/register'} style={{ color: '#b0a448' }}>
+            <Link to={'/register'} style={{ color: '#b0a448' }}>
               Register
             </Link>
           </Col>
