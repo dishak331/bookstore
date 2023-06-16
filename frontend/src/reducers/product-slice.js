@@ -2,8 +2,15 @@ import { createSlice } from '@reduxjs/toolkit';
 import { products } from '../DummyData';
 
 const productInitial = {
-  products: products,
-  updateSuccess: false
+  products: [],
+  messageProduct: '',
+  updateSuccess: false,
+  getAllBooksLoading: true,
+  messageProductDetail: '',
+  updateProductMessage: '',
+  addProductMessage: '',
+  reviewMessage: '',
+  productDetail: {}
 };
 
 const productSlice = createSlice({
@@ -53,6 +60,30 @@ const productSlice = createSlice({
     },
     updateSuccessFalse(state, action) {
       state.updateSuccess = false;
+    },
+    updateProductMessage(state, action) {
+      state.messageProduct = action.payload.message;
+    },
+    updateProductDetailMessage(state, action) {
+      state.messageProductDetail = action.payload.message;
+    },
+    getAllProduct(state, action) {
+      state.products = action.payload.products;
+    },
+    setProductDetail(state, action) {
+      state.productDetail = action.payload.productDetail;
+    },
+    setUpdateProductMessage(state, action) {
+      state.updateProductMessage = action.payload.message;
+    },
+    setAddProductMessage(state, action) {
+      state.addProductMessage = action.payload.message;
+    },
+    setReviewMessage(state, action) {
+      state.reviewMessage = action.payload.message;
+    },
+    GET_ALL_BOOKS_LOADING_CHANGE(state, action) {
+      state.getAllBooksLoading = action.payload.loading;
     }
   }
 });

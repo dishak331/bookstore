@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const uInitial = {
+  userId: -1,
   firstName: '',
   lastName: '',
   email: '',
@@ -19,6 +20,7 @@ const userInitial = {
   userList: [],
   messageLogin: '',
   messageRegister: '',
+  messageUpdate: '',
   updateSuccess: false,
   registerSuccess: false,
   isAdmin: admin
@@ -35,6 +37,7 @@ const userSlice = createSlice({
         localStorage.setItem('userInfo', true);
         localStorage.setItem('admin', true);
         state.user = {
+          userId: -1,
           firstName: 'admin',
           lastName: '1',
           email: 'dk@gmail.com',
@@ -132,29 +135,75 @@ const userSlice = createSlice({
       localStorage.setItem('user', JSON.stringify(state.user));
       state.updateSuccess = true;
     },
+    updateUser(state, action) {
+      const update = action.payload.user;
+      const updatedDetails = {
+        userId: update.user_id,
+        userName: update.username,
+        email: update.email,
+        firstName: update.first_name,
+        lastName: update.last_name,
+        password: update.password
+      };
+      console.log(updatedDetails);
+      state.messageUpdate = '';
+
+      localStorage.setItem('user', JSON.stringify(updatedDetails));
+      state.user = updatedDetails;
+      state.updateSuccess = true;
+      console.log(state.user);
+    },
     setMessage(state, action) {
       state.messageRegister = action.payload.message;
       console.log(state.messageRegister);
+    },
+    setMessageLogin(state, action) {
+      state.messageLogin = action.payload.message;
+      console.log(state.messageLogin);
+    },
+    setMessageUpdate(state, action) {
+      state.messageUpdate = action.payload.message;
+      console.log(state.messageLogin);
     },
     loggedInError(state, action) {
       const message = action.payload.message;
       state.messageLogin = message;
     },
+    adminCheckLogin(state, action) {
+      // const loginDetails = action.payload;
+
+      // if (loginDetails.username === 'dk@gmail.com' && loginDetails.password === '1234') {
+      localStorage.setItem('userInfo', true);
+      localStorage.setItem('admin', true);
+      state.user = {
+        userId: -1,
+        firstName: 'admin',
+        lastName: '1',
+        email: 'dk@gmail.com',
+        userName: 'dk',
+        password: '1234'
+      };
+      localStorage.setItem('user', JSON.stringify(state.user));
+      state.userInfo = true;
+      state.isAdmin = true;
+      // }
+    },
     loggedIn(state, action) {
       state.user = action.payload.user;
-      if (state.user.userName === 'dk@gmail.com' && state.user.password === '1234') {
-        localStorage.setItem('userInfo', true);
-        localStorage.setItem('admin', true);
-      }
+      // if (state.user.userName === 'dk@gmail.com' && state.user.password === '1234') {
+      //   localStorage.setItem('userInfo', true);
+      //   localStorage.setItem('admin', true);
+      // }
 
-      state.messageRegister = 'x';
-      state.user = user;
+      state.messageRegister = '';
+      // state.user = user;
       state.messageLogin = '';
       localStorage.setItem('userInfo', true);
       console.log(state.user);
       localStorage.setItem('user', JSON.stringify(state.user));
       state.userInfo = true;
     },
+
     setSuccessFalse(state) {
       state.updateSuccess = false;
     }

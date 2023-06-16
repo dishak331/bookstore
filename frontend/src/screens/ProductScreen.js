@@ -11,11 +11,16 @@ import { productAction } from '../reducers/product-slice';
 import { cartActions } from '../reducers/cart-slice';
 import { userDetails } from '../reducers/user-slice';
 import { history } from '../App';
+import { getBookData } from '../actions/product-actions';
+import FullPageLoader from '../components/FullPageLoader';
+import { createReviewData } from '../actions/review-actions';
 
 const ProductScreen = (props) => {
   const [qty, setQty] = useState(1);
   const [rating, setRating] = useState(0);
   const [reviewMessage, setReviewMessage] = useState('');
+  const [reviews, setReviews] = useState([]);
+
   const [productimageBase64, setProductimageBase64] = useState(null);
   // const [product, setProduct] = useState({});
   // let product = {};
@@ -26,9 +31,13 @@ const ProductScreen = (props) => {
 
   const dispatch = useDispatch();
   // const product = useSelector((state) => state.productDetails.product);
-  const products = useSelector((state) => state.product.products);
+  // const products = useSelector((state) => state.product.products);
   const cart = useSelector((state) => state.cart.cartItems);
   const admin = useSelector((state) => state.user.isAdmin);
+  const product = useSelector((state) => state.product.productDetail);
+  const msg = useSelector((state) => state.product.messageProductDetail);
+  const reviewError = useSelector((state) => state.product.reviewMessage);
+
   // const reviews = useSelector((state) => state.productReviews.reviews)[id];
   // console.log(reviews);
 
@@ -41,22 +50,11 @@ const ProductScreen = (props) => {
 
   const userLogin = useSelector((state) => state.user);
   const { userInfo } = userLogin;
-  // const [product, setProduct] = useState(null);
-  const product = products.find((p) => p.productId == id);
-  if (!product) {
-    return (
-      <div className='text-center'>
-        <Message>No Product Found</Message>
-      </div>
-    );
-  }
-  // const [reviews, setReviews] = useState([]);
-  // let imageId = product.imageId;
-  let reviews = [];
-  if (product) {
-    reviews = product.reviews;
-  }
-  console.log(rating);
+  // const [product, setProduct] = useState({});
+
+  const [loading, setLoading] = useState(true);
+  // const product = products.find((p) => p.productId == id);
+
   // const productReviewCreate = useSelector((state) => state.productReviewCreate);
   // const { success: successProductReview, loading: loadingProductReview, error: errorProductReview } = productReviewCreate;
 
@@ -66,6 +64,9 @@ const ProductScreen = (props) => {
     // if (!prod) {
     //   return;
     // }
+    setLoading(true);
+    dispatch(getBookData(id));
+    setLoading(false);
     // setProduct(prod);
     // setReviews(product.reviews);
     // console.log('////');
@@ -90,7 +91,26 @@ const ProductScreen = (props) => {
     //   setProductimageBase64(r);
     // });
     // }
-  }, []);
+  }, [dispatch, id]);
+  // let reviews = [];
+
+  useEffect(() => {
+    if (product.reviews) {
+      setReviews(product.reviews);
+      console.log(reviews);
+    }
+  }, [product]);
+  if (msg.length > 0) {
+    return (
+      <div className='text-center'>
+        <Message>{msg}</Message>
+      </div>
+    );
+  }
+  // const [reviews, setReviews] = useState([]);
+  // let imageId = product.imageId;
+
+  console.log(rating);
   const inCart = cart.find((prod) => prod.productId == id);
   // console.log(product);
 
@@ -109,22 +129,21 @@ const ProductScreen = (props) => {
   };
 
   const createProductReviewHandler = (e) => {
-    e.preventDefault();
+    // e.preventDefault();
     const newReview = {
-      username: userDetails.firstName + ' ' + userDetails.lastName,
-      reviewMessage: reviewMessage,
-      ratingValue: rating,
-      reviewId: Math.random().toString()
+      username: userDetails.userName,
+      description: reviewMessage,
+      rating: rating,
+      book_id: id,
+      user_id: userDetails.userId
     };
-    dispatch(
-      productAction.createReview({
-        id: id,
-        newReview: newReview
-      })
-    );
+    dispatch(createReviewData(newReview));
+    setLoading(true);
+    dispatch(getBookData(id));
+    setLoading(false);
   };
 
-  return (
+  return !loading ? (
     <>
       <Row>
         <Link className='btn btn-dark my-3' to={'..'}>
@@ -158,6 +177,9 @@ const ProductScreen = (props) => {
                 <h4>{product.productName}</h4>
               </ListGroupItem>
               <ListGroupItem>
+                <i>by {product.author}</i>
+              </ListGroupItem>
+              <ListGroupItem>
                 <Rating value={product.averageRating} text={`${product.noOfRatings} reviews`}></Rating>
               </ListGroupItem>
               <ListGroupItem>Price : ${product.price}</ListGroupItem>
@@ -179,27 +201,21 @@ const ProductScreen = (props) => {
                 <ListGroupItem>
                   <Row>
                     <Col>Status:</Col>
-                    <Col>{product.availableItemCount > 0 ? 'In Stock' : 'Out of Stock'}</Col>
+                    <Col>{product.outOfStock === 'no' ? 'In Stock' : 'Out of Stock'}</Col>
                   </Row>
                 </ListGroupItem>
 
-                {product.availableItemCount > 0 && (
+                {product.outOfStock === 'no' && (
                   <ListGroup.Item>
                     <Row>
                       <Col>Qty</Col>
                       <Col>
                         <Form.Control as='select' value={qty} onChange={(e) => setQty(e.target.value)}>
-                          {product.availableItemCount > 10
-                            ? [0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((x) => (
-                                <option key={x + 1} value={x + 1}>
-                                  {x + 1}
-                                </option>
-                              ))
-                            : [...Array(product.availableItemCount).keys()].map((x) => (
-                                <option key={x + 1} value={x + 1}>
-                                  {x + 1}
-                                </option>
-                              ))}
+                          {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((x) => (
+                            <option key={x + 1} value={x + 1}>
+                              {x + 1}
+                            </option>
+                          ))}
                         </Form.Control>
                       </Col>
                     </Row>
@@ -213,7 +229,7 @@ const ProductScreen = (props) => {
                       className='btn-block'
                       variant='warning'
                       type='button'
-                      disabled={product.availableItemCount <= 0}
+                      disabled={product.outOfStock === 'yes'}
                     >
                       Add to Cart
                     </Button>
@@ -245,14 +261,14 @@ const ProductScreen = (props) => {
         >
           <Col md={6}>
             <h2>Reviews</h2>
-            {{ reviews }?.length === 0 && <Message>No Reviews</Message>}
+            {reviews.length === 0 && <Message>No Reviews</Message>}
             <ListGroup variant='flush'>
-              {reviews?.map((review) => (
-                <ListGroup.Item key={review.reviewId}>
-                  <strong>{review.username}</strong>
-                  <Rating value={review.ratingValue} />
-                  {/* <p>{review.created_at.substring(0, 10)}</p> */}
-                  <p>{review.reviewMessage}</p>
+              {reviews.map((review) => (
+                <ListGroup.Item key={review.review_id}>
+                  <strong>{review.username ? review.username : 'Anonymous'}</strong>
+                  <Rating value={review.rating} />
+                  {/* /* <p>{review.created_at.substring(0, 10)}</p> */}
+                  <p>{review.description}</p>
                 </ListGroup.Item>
               ))}
             </ListGroup>
@@ -267,7 +283,7 @@ const ProductScreen = (props) => {
                 <Form onSubmit={createProductReviewHandler}>
                   <Form.Group controlId='rating'>
                     <Form.Label>Rating</Form.Label>
-                    <Form.Control as='select' value={rating} onChange={(e) => setRating(e.target.value)}>
+                    <Form.Control as='select' required value={rating} onChange={(e) => setRating(e.target.value)}>
                       <option value=''>Select...</option>
                       <option value='1'>1 - Poor</option>
                       <option value='2'>2 - Fair</option>
@@ -289,6 +305,7 @@ const ProductScreen = (props) => {
                   <Button type='submit' variant='warning'>
                     Submit
                   </Button>
+                  {reviewError.length > 0 && <Message>{reviewError}</Message>}
                 </Form>
               ) : (
                 <Message>
@@ -302,6 +319,8 @@ const ProductScreen = (props) => {
       {/* ) : null} */}
       {/* {loading && <FullPageLoader></FullPageLoader>} */}
     </>
+  ) : (
+    <FullPageLoader></FullPageLoader>
   );
 };
 

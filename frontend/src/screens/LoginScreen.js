@@ -8,11 +8,14 @@ import FormContainer from '../components/FormContainer';
 
 import { userActions } from '../reducers/user-slice';
 import { emailRegex, passwordRegex } from '../constants/common';
+import { loginUserData } from '../actions/user-actions';
+import FullPageLoader from '../components/FullPageLoader';
 
 const LoginScreen = (props) => {
   const [userNameOrEmail, setUserNameOrEmail] = useState('');
   const [msg, setMsg] = useState('');
   const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
   const userInfo = useSelector((state) => state.user.userInfo);
   const message = useSelector((state) => state.user.messageLogin);
@@ -46,11 +49,13 @@ const LoginScreen = (props) => {
     //   return;
     // }
     setMsg('');
+    setLoading(true);
     const loginDetails = {
-      userName: userNameOrEmail,
+      email: userNameOrEmail,
       password: password
     };
-    dispatch(userActions.login(loginDetails));
+    dispatch(loginUserData(loginDetails));
+    setLoading(false);
     // history.push(redirect);
     console.log('done');
   };
@@ -97,7 +102,7 @@ const LoginScreen = (props) => {
           </Col>
         </Row>
       </FormContainer>
-      {/* {loading && <FullPageLoader></FullPageLoader>} */}
+      {loading && <FullPageLoader></FullPageLoader>}
     </div>
   );
 };

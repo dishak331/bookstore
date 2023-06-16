@@ -7,7 +7,7 @@ import { userActions } from '../reducers/user-slice';
 import { useHistory, useLocation } from 'react-router-dom';
 const Header = (props) => {
   const userInfo = useSelector((state) => state.user.userInfo);
-  const user = useSelector((state) => state.user.user);
+  const username = useSelector((state) => state.user.user.userName);
   const admin = useSelector((state) => state.user.isAdmin);
   const [searchText, setSearchText] = useState('');
   const history = useHistory();
@@ -16,6 +16,7 @@ const Header = (props) => {
   const pathName = location.pathname;
   const [isHome, setIsHome] = useState(false);
   console.log('userInfo ' + userInfo);
+  // console.log(`//${user.userName}`);
 
   const dispatch = useDispatch();
 
@@ -91,7 +92,7 @@ const Header = (props) => {
               {userInfo ? (
                 <NavDropdown className='p-1' title={'Profile'} id='username'>
                   <LinkContainer to='/userProfile'>
-                    <NavDropdown.Item>{user.userName}</NavDropdown.Item>
+                    <NavDropdown.Item>{username}</NavDropdown.Item>
                   </LinkContainer>
                   <NavDropdown.Item onClick={logoutHandler}>Logout</NavDropdown.Item>
                 </NavDropdown>

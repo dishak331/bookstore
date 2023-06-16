@@ -11,41 +11,70 @@ import { emailRegex, passwordRegex } from '../constants/common';
 import FormInput from '../components/FormInput';
 import { useHistory, useParams } from 'react-router-dom/cjs/react-router-dom.min';
 import { productAction } from '../reducers/product-slice';
+import { addBookData, getBookData, updateBookData } from '../actions/product-actions';
+import FullPageLoader from '../components/FullPageLoader';
 
 const AddEditBookScreen = (props) => {
   const [productName, setProductName] = useState('');
   const [image, setImage] = useState('');
   const [renderImage, setRenderImage] = useState('');
   const [price, setPrice] = useState('');
+  const [author, setAuthor] = useState('');
   const [description, setDescription] = useState('');
   const [outOfStock, setOutOfStock] = useState('false');
   const [message, setMessage] = useState(null);
-  const products = useSelector((state) => state.product.products);
-  const success = useSelector((state) => state.product.updateSuccess);
-  const history = useHistory();
-
   const params = useParams();
   const { id } = params;
+  const [loading, setLoading] = useState(id ? true : false);
+  // const products = useSelector((state) => state.product.products);
+  const product = useSelector((state) => state.product.productDetail);
+  const msg = useSelector((state) => state.product.messageProductDetail);
+
+  const messageUpdate = useSelector((state) => state.product.updateProductMessage);
+  const messageAdd = useSelector((state) => state.product.addProductMessage);
+  const success = useSelector((state) => state.product.updateSuccess);
+  const history = useHistory();
 
   const dispatch = useDispatch();
   const userInfo = useSelector((state) => state.user.userInfo);
   const m = useSelector((state) => state.user.messageRegister);
 
   //   const redirect = props.location.search ? props.location.search.substring(props.location.search.indexOf('=') + 1) : '/';
+
+  useEffect(() => {
+    setAuthor('');
+    setDescription('');
+    setImage('');
+    setMessage(null);
+    setOutOfStock('false');
+    setPrice('');
+    setProductName('');
+  }, []);
   useEffect(() => {
     if (id) {
-      const product = products.find((prod) => prod.productId == id);
-      if (!product) {
+      setLoading(true);
+      // const product = products.find((prod) => prod.productId == id);
+      dispatch(getBookData(id));
+      setLoading(false);
+    }
+  }, [dispatch, id]);
+  useEffect(() => {
+    if (id) {
+      if (!loading && msg.length > 0) {
         history.push('/404');
         return;
       }
-      setDescription(product.description);
-      setImage(product.imageId);
-      setRenderImage(product.imageId);
-      setPrice(product.price);
-      setProductName(product.productName);
+      if (product.productName) {
+        setDescription(product.description);
+        setAuthor(product.author);
+        setImage(product.imageId);
+        setRenderImage(product.imageId);
+        setPrice(product.price);
+        setProductName(product.productName);
+        setOutOfStock(product.outOfStock === 'no' ? 'false' : 'true');
+      }
     }
-  }, [id]);
+  }, [id, msg, messageUpdate, messageAdd, product, loading]);
   //   useEffect(() => {
   //     // if (userInfo) {
   //     //   props.history.push(redirect);
@@ -64,35 +93,51 @@ const AddEditBookScreen = (props) => {
       setMessage('Price cannot be anything other than a number');
       return;
     }
+    if (description.length > 100) {
+      setMessage('Description too long');
+      return;
+    }
+    setLoading(true);
     if (id) {
       dispatch(
-        productAction.updateProduct({
-          productName: productName,
-          description: description,
-          image: image,
+        updateBookData({
+          book_id: product.productId,
+          image_url: image,
+          average_reviews: product.averageRating,
+          total_reviews: product.noOfRatings,
           price: price,
-          productId: id
+          title: productName,
+          author: author,
+          out_of_stock: outOfStock === 'true' ? 'yes' : 'no',
+          description: description,
+          reviews: product.reviews
         })
       );
     } else {
       dispatch(
-        productAction.addProduct({
-          productName: productName,
+        addBookData({
+          title: productName,
+          author: author,
           description: description,
-          image: image,
-          price: price
+          image_url: image,
+          price: parseInt(price),
+          out_of_stock: outOfStock === 'true' ? 'yes' : 'no'
         })
       );
     }
+    setLoading(false);
     // const timer = setTimeout(() => {
     //   dispatch(productAction.updateSuccessFalse());
     // }, 3000);
 
-    if (id) {
+    if (id && messageUpdate.length === 0) {
       history.goBack();
-    } else {
+    }
+
+    if (!id && messageAdd.length === 0) {
       history.push('/');
     }
+
     // return () => clearTimeout(timer);
   };
 
@@ -124,14 +169,17 @@ const AddEditBookScreen = (props) => {
   //   }
   // };
 
-  return (
+  return !loading ? (
     <div>
       <FormContainer>
         <h1>{props.productName ? 'Edit Book' : 'Add New Book'}</h1>
-        {message && <Message variant='warning'>{message}</Message>}
+        {message && (id ? messageUpdate.length === 0 : messageAdd.length === 0) && <Message variant='warning'>{message}</Message>}
+        {id && messageUpdate.length > 0 && <Message variant='warning'>{messageUpdate}</Message>}
+        {!id && messageAdd.length > 0 && <Message variant='warning'>{messageAdd}</Message>}
+        {/* {message.length===0 && } */}
 
         <Form onSubmit={addEditHandler}>
-          <Card.Img src={renderImage} variant='top' style={{ height: '250px' }}></Card.Img>
+          <Card.Img src={renderImage} variant='top' style={{ width: '80%', height: '350px' }}></Card.Img>
 
           <Row className='mt-3'>
             <div className='col-10'>
@@ -149,6 +197,7 @@ const AddEditBookScreen = (props) => {
             value={productName}
             onChange={(e) => setProductName(e.target.value)}
           />
+          <FormInput id='author' title='Book Author' placeholder='Book Author' value={author} onChange={(e) => setAuthor(e.target.value)} />
           <FormInput id='price' title='Price' placeholder='Price' value={price} onChange={(e) => setPrice(e.target.value)} />
           <FormInput
             id='description'
@@ -197,6 +246,8 @@ const AddEditBookScreen = (props) => {
         </Form>
       </FormContainer>
     </div>
+  ) : (
+    <FullPageLoader></FullPageLoader>
   );
 };
 

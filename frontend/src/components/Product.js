@@ -14,6 +14,9 @@ const Product = (props) => {
         </Link>
         <Card.Body>
           <Link to={`/product/${product.productId}`}>
+            <Card.Text as='div'>
+              <i>by {product.author}</i>
+            </Card.Text>
             <Card.Title as='div'>
               <strong>{product.productName}</strong>
             </Card.Title>

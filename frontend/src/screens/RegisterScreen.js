@@ -56,26 +56,27 @@ const RegisterScreen = (props) => {
       setMessage('Password must be more than 8 characters.\nIt must contain a number, string and special character');
     } else {
       setMessage(null);
-      // setLoading(true);
+      setLoading(true);
       const details = {
-        userName: userName,
-        firstName: firstName,
+        username: userName,
+        first_name: firstName,
         password: password,
-        email: email
+        email: email,
+        last_name: ''
       };
 
-      // dispatch(registerUserData(details));
-      // setLoading(false);
-      dispatch(userActions.register(details));
+      dispatch(registerUserData(details));
+      setLoading(false);
+      // //  dispatch(userActions.register(details));
       // props.history.push('/login');
       // counterForMessage = counterForMessage + 1;
-      const data = {
-        userName: email,
-        password: password,
-        register: true
-      };
+      // //    const data = {
+      // //  userName: email,
+      // //  password: password,
+      // //  register: true
+      // //   };
 
-      dispatch(userActions.login(data));
+      // //    dispatch(userActions.login(data));
       // setMessage(null);
       // console.log(`////${m}`);
     }

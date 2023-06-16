@@ -6,14 +6,18 @@ import { LinkContainer } from 'react-router-bootstrap';
 import Message from '../components/Message';
 
 import { userActions } from '../reducers/user-slice';
+import { updateUserData } from '../actions/user-actions';
+import FullPageLoader from '../components/FullPageLoader';
 
 const ProfileScreen = ({ history }) => {
+  const [username, setUserName] = useState('');
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [message, setMessage] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -21,10 +25,12 @@ const ProfileScreen = ({ history }) => {
   // const { userInfo } = userLogin;
 
   const user = useSelector((state) => state.user.user);
+
   // setFirstName(user.firstName);
   // setLastName(user.lastName);
   // setEmail(user.email);
   const success = useSelector((state) => state.user.updateSuccess);
+  const msg = useSelector((state) => state.user.messageUpdate);
   // const { error: errorUserDetails, loading: loadingUserDetails, user } = userDetails;
 
   // const userUpdateProfile = useSelector((state) => state.userUpdateProfile);
@@ -37,6 +43,7 @@ const ProfileScreen = ({ history }) => {
     if (!userInfo) {
       history.push('/login');
     }
+    setUserName(user.userName);
     setFirstName(user.firstName);
     setLastName(user.lastName);
     setEmail(user.email);
@@ -56,16 +63,25 @@ const ProfileScreen = ({ history }) => {
   const userProfileUpdateHandler = (e) => {
     e.preventDefault();
     setMessage(null);
+
     if (password !== confirmPassword) {
       setMessage('Passwords do not match');
     } else {
+      setLoading(true);
+      const userid = user.userId;
+      if (!user.userId) {
+        userid = JSON.parse(localStorage.getItem('user')).userId;
+      }
       const details = {
-        firstName: firstName,
-        lastName: lastName,
+        user_id: userid,
+        first_name: firstName,
+        last_name: lastName,
         email: email,
+        username: username,
         password: password
       };
-      dispatch(userActions.updateDetails(details));
+      dispatch(updateUserData(details));
+      setLoading(false);
       const timer = setTimeout(() => {
         dispatch(userActions.setSuccessFalse());
       }, 3000);
@@ -78,12 +94,25 @@ const ProfileScreen = ({ history }) => {
       <Col md={3}>
         <h2>User Profile</h2>
         {message && <Message variant='danger'>{message}</Message>}
+        {!message && msg.length > 0 && <Message variant='warning'>{msg}</Message>}
         {success && <Message variant='success'>Profile Updated</Message>}
         {/* {(errorUserDetails || errorUpdateUserDetails) && <Message variant='danger'>{errorUserDetails || errorUpdateUserDetails}</Message>} */}
         <Form onSubmit={userProfileUpdateHandler}>
+          <Form.Group controlId='userName'>
+            <Form.Label>Username</Form.Label>
+            <Form.Control
+              required
+              type='userName'
+              placeholder='Enter Username'
+              value={username}
+              onChange={(e) => setUserName(e.target.value)}
+            ></Form.Control>
+          </Form.Group>
+
           <Form.Group controlId='firstName'>
             <Form.Label>First Name</Form.Label>
             <Form.Control
+              required
               type='firstName'
               placeholder='Enter First Name'
               value={firstName}
@@ -103,12 +132,19 @@ const ProfileScreen = ({ history }) => {
 
           <Form.Group controlId='email'>
             <Form.Label>Email Address</Form.Label>
-            <Form.Control type='email' placeholder='Enter email' value={email} onChange={(e) => setEmail(e.target.value)}></Form.Control>
+            <Form.Control
+              required
+              type='email'
+              placeholder='Enter email'
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            ></Form.Control>
           </Form.Group>
 
           <Form.Group controlId='password'>
             <Form.Label>Password</Form.Label>
             <Form.Control
+              required
               type='password'
               placeholder='Enter password'
               value={password}
@@ -119,6 +155,7 @@ const ProfileScreen = ({ history }) => {
           <Form.Group controlId='confirmPassword'>
             <Form.Label>Confirm Password</Form.Label>
             <Form.Control
+              required
               type='password'
               placeholder='Confirm password'
               value={confirmPassword}
@@ -171,6 +208,7 @@ const ProfileScreen = ({ history }) => {
         </Table>
         {/* )} */}
       </Col>
+      {loading && <FullPageLoader />}
       {/* {(loadingUserDetails || loadingUpdateUserDetails || loadingOrderListMy) && <FullPageLoader />} */}
     </Row>
   );
