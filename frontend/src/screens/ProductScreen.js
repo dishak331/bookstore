@@ -20,6 +20,7 @@ const ProductScreen = (props) => {
   const [rating, setRating] = useState(0);
   const [reviewMessage, setReviewMessage] = useState('');
   const [reviews, setReviews] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const [productimageBase64, setProductimageBase64] = useState(null);
   // const [product, setProduct] = useState({});
@@ -52,7 +53,6 @@ const ProductScreen = (props) => {
   const { userInfo } = userLogin;
   // const [product, setProduct] = useState({});
 
-  const [loading, setLoading] = useState(true);
   // const product = products.find((p) => p.productId == id);
 
   // const productReviewCreate = useSelector((state) => state.productReviewCreate);
@@ -121,6 +121,8 @@ const ProductScreen = (props) => {
         productId: id,
         productName: product.productName,
         itemPrice: product.price,
+        imageId: product.imageId,
+        outOfStock: product.outOfStock,
         extendedPrice: 0,
         quantity: qty
       })
@@ -129,7 +131,7 @@ const ProductScreen = (props) => {
   };
 
   const createProductReviewHandler = (e) => {
-    // e.preventDefault();
+    e.preventDefault();
     const newReview = {
       username: userDetails.userName,
       description: reviewMessage,
@@ -229,7 +231,7 @@ const ProductScreen = (props) => {
                       className='btn-block'
                       variant='warning'
                       type='button'
-                      disabled={product.outOfStock === 'yes'}
+                      disabled={product.outOfStock === 'yes' || admin}
                     >
                       Add to Cart
                     </Button>

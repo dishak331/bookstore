@@ -27,6 +27,8 @@ const CartScreen = (props) => {
         productId: item.productId,
         productName: item.productName,
         itemPrice: item.itemPrice,
+        imageId: item.imageId,
+        outOfStock: item.outOfStock,
         extendedPrice: 0,
         quantity: q
       })
@@ -34,7 +36,7 @@ const CartScreen = (props) => {
   };
 
   const checkoutHandler = () => {
-    props.history.push('/login?redirect=shipping');
+    props.history.push('/login?redirect=placeOrder');
   };
 
   return (

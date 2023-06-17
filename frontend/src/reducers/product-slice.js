@@ -18,13 +18,14 @@ const productSlice = createSlice({
   initialState: productInitial,
   reducers: {
     createReview(state, action) {
-      const id = action.payload.id;
       const newReview = action.payload.newReview;
-      const prod = state.products.find((prod) => prod.productId == id);
+      const prod = state.productDetail;
       prod.reviews.push(newReview);
+      // state.productDetail = prod;
       //   prod.noOfRatings++;
-      prod.averageRating = (prod.noOfRatings * prod.averageRating + parseInt(newReview.ratingValue)) / (prod.noOfRatings + 1);
+      prod.averageRating = Math.round((prod.noOfRatings * prod.averageRating + parseInt(newReview.rating)) / (prod.noOfRatings + 1));
       prod.noOfRatings = prod.reviews.length;
+      state.productDetail = prod;
 
       console.log(prod.averageRating);
     },

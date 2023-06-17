@@ -16,10 +16,10 @@ const OrderItem = ({ item }) => {
       <ListGroup.Item key={item.productId}>
         <Row>
           <Col md={2}>
-            <Image src={product.imageId} alt={item.productName} fluid rounded></Image>
+            <Image src={item.imageId} alt={item.productName} fluid rounded></Image>
           </Col>
           <Col md={3} className='pt-4'>
-            <Link to={`/product/${item.productId}`}>{product.productName}</Link>
+            <Link to={`/product/${item.productId}`}>{item.productName}</Link>
           </Col>
           <Col md={2} className='pt-4'>
             ${item.itemPrice}

@@ -6,8 +6,9 @@ import { LinkContainer } from 'react-router-bootstrap';
 import Message from '../components/Message';
 
 import { userActions } from '../reducers/user-slice';
-import { updateUserData } from '../actions/user-actions';
+import { getUserDataById, updateUserData } from '../actions/user-actions';
 import FullPageLoader from '../components/FullPageLoader';
+import { getAllOrdersData, getOrdersByUserId } from '../actions/order-actions';
 
 const ProfileScreen = ({ history }) => {
   const [username, setUserName] = useState('');
@@ -22,6 +23,10 @@ const ProfileScreen = ({ history }) => {
   const dispatch = useDispatch();
 
   const userInfo = useSelector((state) => state.user.userInfo);
+  const orderLoading = useSelector((state) => state.order.orderLoading);
+  const orderError = useSelector((state) => state.order.orderMessage);
+  const admin = useSelector((state) => state.user.isAdmin);
+
   // const { userInfo } = userLogin;
 
   const user = useSelector((state) => state.user.user);
@@ -38,6 +43,14 @@ const ProfileScreen = ({ history }) => {
 
   const orders = useSelector((state) => state.order.orders);
   // const { error: errorOrderListMy, loading: loadingOrderListMy, orders } = orderListMy;
+
+  useEffect(() => {
+    if (!admin) {
+      dispatch(getOrdersByUserId(user.userId));
+    } else {
+      dispatch(getAllOrdersData());
+    }
+  }, [dispatch]);
 
   useEffect(() => {
     if (!userInfo) {
@@ -91,85 +104,89 @@ const ProfileScreen = ({ history }) => {
 
   return (
     <Row>
-      <Col md={3}>
-        <h2>User Profile</h2>
-        {message && <Message variant='danger'>{message}</Message>}
-        {!message && msg.length > 0 && <Message variant='warning'>{msg}</Message>}
-        {success && <Message variant='success'>Profile Updated</Message>}
-        {/* {(errorUserDetails || errorUpdateUserDetails) && <Message variant='danger'>{errorUserDetails || errorUpdateUserDetails}</Message>} */}
-        <Form onSubmit={userProfileUpdateHandler}>
-          <Form.Group controlId='userName'>
-            <Form.Label>Username</Form.Label>
-            <Form.Control
-              required
-              type='userName'
-              placeholder='Enter Username'
-              value={username}
-              onChange={(e) => setUserName(e.target.value)}
-            ></Form.Control>
-          </Form.Group>
+      {!admin && (
+        <Col md={3}>
+          <h2>User Profile</h2>
+          {message && <Message variant='danger'>{message}</Message>}
+          {!message && msg.length > 0 && <Message variant='warning'>{msg}</Message>}
+          {success && <Message variant='success'>Profile Updated</Message>}
+          {/* {(errorUserDetails || errorUpdateUserDetails) && <Message variant='danger'>{errorUserDetails || errorUpdateUserDetails}</Message>} */}
+          <Form onSubmit={userProfileUpdateHandler}>
+            <Form.Group controlId='userName'>
+              <Form.Label>Username</Form.Label>
+              <Form.Control
+                required
+                type='userName'
+                placeholder='Enter Username'
+                value={username}
+                onChange={(e) => setUserName(e.target.value)}
+              ></Form.Control>
+            </Form.Group>
 
-          <Form.Group controlId='firstName'>
-            <Form.Label>First Name</Form.Label>
-            <Form.Control
-              required
-              type='firstName'
-              placeholder='Enter First Name'
-              value={firstName}
-              onChange={(e) => setFirstName(e.target.value)}
-            ></Form.Control>
-          </Form.Group>
+            <Form.Group controlId='firstName'>
+              <Form.Label>First Name</Form.Label>
+              <Form.Control
+                required
+                type='firstName'
+                placeholder='Enter First Name'
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
+              ></Form.Control>
+            </Form.Group>
 
-          <Form.Group controlId='lastName'>
-            <Form.Label>Last Name</Form.Label>
-            <Form.Control
-              type='lastName'
-              placeholder='Enter Last Name'
-              value={lastName}
-              onChange={(e) => setLastName(e.target.value)}
-            ></Form.Control>
-          </Form.Group>
+            <Form.Group controlId='lastName'>
+              <Form.Label>Last Name</Form.Label>
+              <Form.Control
+                type='lastName'
+                placeholder='Enter Last Name'
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
+              ></Form.Control>
+            </Form.Group>
 
-          <Form.Group controlId='email'>
-            <Form.Label>Email Address</Form.Label>
-            <Form.Control
-              required
-              type='email'
-              placeholder='Enter email'
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            ></Form.Control>
-          </Form.Group>
+            <Form.Group controlId='email'>
+              <Form.Label>Email Address</Form.Label>
+              <Form.Control
+                required
+                type='email'
+                placeholder='Enter email'
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              ></Form.Control>
+            </Form.Group>
 
-          <Form.Group controlId='password'>
-            <Form.Label>Password</Form.Label>
-            <Form.Control
-              required
-              type='password'
-              placeholder='Enter password'
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            ></Form.Control>
-          </Form.Group>
+            <Form.Group controlId='password'>
+              <Form.Label>Password</Form.Label>
+              <Form.Control
+                required
+                type='password'
+                placeholder='Enter password'
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              ></Form.Control>
+            </Form.Group>
 
-          <Form.Group controlId='confirmPassword'>
-            <Form.Label>Confirm Password</Form.Label>
-            <Form.Control
-              required
-              type='password'
-              placeholder='Confirm password'
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-            ></Form.Control>
-          </Form.Group>
+            <Form.Group controlId='confirmPassword'>
+              <Form.Label>Confirm Password</Form.Label>
+              <Form.Control
+                required
+                type='password'
+                placeholder='Confirm password'
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+              ></Form.Control>
+            </Form.Group>
 
-          <Button type='submit' variant='warning'>
-            Update
-          </Button>
-        </Form>
-      </Col>
+            <Button type='submit' variant='warning'>
+              Update
+            </Button>
+          </Form>
+        </Col>
+      )}
       <Col md={9}>
-        <h2>My Orders</h2>
+        {orderError.length > 0 && <Message variant='warning'>{orderError}</Message>}
+        {orderError.length === 0 && orders.length === 0 && <Message>No orders to show</Message>}
+        <h2>{admin ? 'All Orders' : 'My Orders'}</h2>
         {/* {errorOrderListMy ? (
           <Message variant='danger'>{errorOrderListMy}</Message>
         ) : ( */}
@@ -177,6 +194,8 @@ const ProfileScreen = ({ history }) => {
           <thead>
             <tr>
               <th>ID</th>
+              {admin && <th>USER ID</th>}
+
               <th>DATE</th>
               <th>TOTAL</th>
               <th>PAID</th>
@@ -186,29 +205,35 @@ const ProfileScreen = ({ history }) => {
           </thead>
           <tbody>
             {orders.length > 0 &&
-              orders.map((order) => (
-                <tr key={order.orderId}>
-                  <td>{order.orderId}</td>
-                  <td>{order.created_at}</td>
-                  <td>{order.totalPrice}</td>
-                  <td>{order.paid ? order.paymentDate?.substring(0, 10) : <i className='fas fa-times' style={{ color: 'red' }}></i>}</td>
-                  <td>
-                    {order.delivered ? order.deliveredDate?.substring(0, 10) : <i className='fas fa-times' style={{ color: 'red' }}></i>}
-                  </td>
-                  <td>
-                    <LinkContainer to={`/order/${order.orderId}`}>
-                      <Button className='btn-sm' variant='warning'>
-                        Details
-                      </Button>
-                    </LinkContainer>
-                  </td>
-                </tr>
-              ))}
+              orders.map((order) => {
+                // let userData = {};
+                // if (admin) {
+                //   userData = await getUserDataById(order.userId);
+                // }
+                return (
+                  <tr key={order.orderId}>
+                    <td>{order.orderId}</td>
+                    {admin && <td>{order.userId}</td>}
+
+                    <td>{order.created_at}</td>
+                    <td>{order.total}</td>
+                    <td>{order.paid ? order.paymentDate?.substring(0, 10) : <i className='fas fa-times' style={{ color: 'red' }}></i>}</td>
+                    <td>{!order.isDelivered ? <i className='fas fa-times' style={{ color: 'red' }}></i> : order.deliveredAt}</td>
+                    <td>
+                      <LinkContainer to={admin ? `/order/${order.orderId}/${order.userId}` : `/order/${order.orderId}`}>
+                        <Button className='btn-sm' variant='warning'>
+                          Details
+                        </Button>
+                      </LinkContainer>
+                    </td>
+                  </tr>
+                );
+              })}
           </tbody>
         </Table>
         {/* )} */}
       </Col>
-      {loading && <FullPageLoader />}
+      {(loading || orderLoading) && <FullPageLoader />}
       {/* {(loadingUserDetails || loadingUpdateUserDetails || loadingOrderListMy) && <FullPageLoader />} */}
     </Row>
   );

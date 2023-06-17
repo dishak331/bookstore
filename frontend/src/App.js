@@ -33,7 +33,8 @@ function App() {
       <main className='py-3'>
         <Container id='body'>
           <Switch>
-            <Route path='/order/:id' component={OrderScreen} />
+            <Route path='/order/:id/:userId?' component={OrderScreen} />
+
             <Route path='/login' component={LoginScreen}></Route>
 
             <Route path='/placeOrder' component={PlaceOrderScreen}></Route>

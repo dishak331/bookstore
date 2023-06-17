@@ -7,8 +7,8 @@ import { Link } from 'react-router-dom';
 import { cartActions } from '../reducers/cart-slice';
 
 const CartItem = ({ item, addToCart }) => {
-  const products = useSelector((state) => state.product.products);
-  const product = products.find((prod) => prod.productId == item.productId);
+  // const products = useSelector((state) => state.product.products);
+  // const product = products.find((prod) => prod.productId == item.productId);
   const dispatch = useDispatch();
 
   useEffect(() => {}, []);
@@ -22,7 +22,7 @@ const CartItem = ({ item, addToCart }) => {
       <ListGroup.Item key={item.productId}>
         <Row>
           <Col md={2}>
-            <Image src={product.imageId} alt={item.productName} fluid rounded></Image>
+            <Image src={item.imageId} alt={item.productName} fluid rounded></Image>
           </Col>
           <Col md={3} className='pt-4'>
             <Link to={`/product/${item.productId}`}>{item.productName}</Link>
@@ -31,20 +31,14 @@ const CartItem = ({ item, addToCart }) => {
             ${item.itemPrice}
           </Col>
           <Col md={2} className='pt-3'>
-            {product && (
+            {item && (
               <>
                 <Form.Control as='select' value={item.quantity} onChange={(e) => addToCart(item, e.target.value)}>
-                  {product.availableItemCount > 11
-                    ? [0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((x) => (
-                        <option key={x + 1} value={x + 1}>
-                          {x + 1}
-                        </option>
-                      ))
-                    : [...Array(product.availableItemCount).keys()].map((x) => (
-                        <option key={x + 1} value={x + 1}>
-                          {x + 1}
-                        </option>
-                      ))}
+                  {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((x) => (
+                    <option key={x + 1} value={x + 1}>
+                      {x + 1}
+                    </option>
+                  ))}
                 </Form.Control>
               </>
             )}

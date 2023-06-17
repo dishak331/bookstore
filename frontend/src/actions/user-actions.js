@@ -1,4 +1,5 @@
 import { headers } from '../constants/headers';
+import { orderActions } from '../reducers/order-slice';
 import { userActions } from '../reducers/user-slice';
 
 const userURL = 'http://localhost:9001';
@@ -98,5 +99,37 @@ export const updateUserData = (data) => {
     //   console.log('error occured');
     //   dispatch(userActions.setMessageUpdate({ message: 'Server error: Try again later' }));
     // }
+  };
+};
+
+export const getUserDataById = (id) => {
+  return async (dispatch) => {
+    try {
+      const response = await fetch(`${userURL}/users/${id}`, {
+        method: 'GET',
+        headers: headers
+      });
+      const body = await response.json();
+      console.log(body);
+      if (!response.ok) {
+      } else {
+        dispatch(
+          orderActions.setUserData({
+            userData: {
+              userId: body.user_id,
+              userName: body.username,
+              firstName: body.first_name,
+              lastName: body.last_name,
+              email: body.email,
+              password: body.password
+            }
+          })
+        );
+        // dispatch(userActions.loggedIn({ user: dataStore }));
+      }
+    } catch (error) {
+      console.log('error occured');
+      return {};
+    }
   };
 };

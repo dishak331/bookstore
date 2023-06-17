@@ -16,7 +16,6 @@ const Header = (props) => {
   const pathName = location.pathname;
   const [isHome, setIsHome] = useState(false);
   console.log('userInfo ' + userInfo);
-  // console.log(`//${user.userName}`);
 
   const dispatch = useDispatch();
 
@@ -83,11 +82,13 @@ const Header = (props) => {
                   </Nav.Link>
                 </LinkContainer>
               )}
-              <LinkContainer to='/cart'>
-                <Nav.Link>
-                  <i className='p-2 fas fa-shopping-cart'></i>Cart
-                </Nav.Link>
-              </LinkContainer>
+              {!admin && (
+                <LinkContainer to='/cart'>
+                  <Nav.Link>
+                    <i className='p-2 fas fa-shopping-cart'></i>Cart
+                  </Nav.Link>
+                </LinkContainer>
+              )}
 
               {userInfo ? (
                 <NavDropdown className='p-1' title={'Profile'} id='username'>

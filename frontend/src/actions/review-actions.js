@@ -19,6 +19,7 @@ export const createReviewData = (data) => {
         dispatch(productAction.setReviewMessage({ message: 'Some error occured' }));
       } else {
         dispatch(productAction.setReviewMessage({ message: '' }));
+        dispatch(productAction.createReview({ newReview: body }));
       }
     } catch (error) {
       console.log('error occured');

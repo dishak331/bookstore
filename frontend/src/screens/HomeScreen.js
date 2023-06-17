@@ -50,7 +50,7 @@ const HomeScreen = () => {
     // setLoading(true);
     dispatch(getAllBooksData());
     // setLoading(false);
-  }, []);
+  }, [dispatch]);
   // useEffect(() => setProductList(prod), [prod]);
 
   // let productList = [];

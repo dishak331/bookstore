@@ -75,10 +75,14 @@ const userSlice = createSlice({
       localStorage.removeItem('userInfo');
       localStorage.removeItem('user');
       localStorage.removeItem('admin');
+      localStorage.removeItem('cart');
+      localStorage.removeItem('totalCart');
       state.user = uInitial;
       state.registerSuccess = false;
       state.userInfo = false;
       state.isAdmin = false;
+      state.messageLogin = '';
+      state.messageRegister = '';
     },
     register(state, action) {
       const registerDetails = action.payload;
@@ -190,6 +194,8 @@ const userSlice = createSlice({
     },
     loggedIn(state, action) {
       state.user = action.payload.user;
+      state.messageLogin = '';
+
       // if (state.user.userName === 'dk@gmail.com' && state.user.password === '1234') {
       //   localStorage.setItem('userInfo', true);
       //   localStorage.setItem('admin', true);
