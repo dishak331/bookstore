@@ -15,7 +15,6 @@ export const registerUserData = (data) => {
       const body = await response.json();
       console.log(body);
       if (!response.ok) {
-        // console.log(body);
         dispatch(userActions.setMessage({ message: body.message }));
       } else {
         dispatch(userActions.setMessage({ message: '' }));
@@ -51,7 +50,6 @@ export const loginUserData = (data) => {
       const body = await response.json();
       console.log(body);
       if (!response.ok) {
-        // console.log(body);
         dispatch(userActions.setMessageLogin({ message: body.message }));
       } else {
         dispatch(userActions.setMessageLogin({ message: '' }));
@@ -74,11 +72,6 @@ export const loginUserData = (data) => {
 
 export const updateUserData = (data) => {
   return async (dispatch) => {
-    // try {
-    // if (data.email === 'dk@gmail.com' && data.password === '1234') {
-    //   dispatch(userActions.adminCheckLogin());
-    //   return;
-    // }
     console.log(data);
     const response = await fetch(`${userURL}/users`, {
       method: 'PUT',
@@ -88,17 +81,11 @@ export const updateUserData = (data) => {
     const body = await response.json();
     console.log(body);
     if (!response.ok) {
-      // console.log(body);
       dispatch(userActions.setMessageUpdate({ message: body.message }));
     } else {
       dispatch(userActions.setMessageUpdate({ message: '' }));
       dispatch(userActions.updateUser({ user: body }));
     }
-    // }
-    // catch (error) {
-    //   console.log('error occured');
-    //   dispatch(userActions.setMessageUpdate({ message: 'Server error: Try again later' }));
-    // }
   };
 };
 
@@ -125,7 +112,6 @@ export const getUserDataById = (id) => {
             }
           })
         );
-        // dispatch(userActions.loggedIn({ user: dataStore }));
       }
     } catch (error) {
       console.log('error occured');

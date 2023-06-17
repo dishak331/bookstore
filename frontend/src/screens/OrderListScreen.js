@@ -6,14 +6,8 @@ import Message from '../components/Message';
 import Loader from '../components/Loader';
 
 const OrderListScreen = ({ history }) => {
-  const dispatch = useDispatch();
-
   const orderList = useSelector((state) => state.orderListAll);
   const { loading, error, orders } = orderList;
-
-  // useEffect(() => {
-  //   dispatch(listOrdersAdmin());
-  // }, [dispatch]);
 
   return (
     <>

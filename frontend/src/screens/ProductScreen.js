@@ -1,98 +1,39 @@
 import React, { useEffect, useState } from 'react';
-
 import { Button, Card, Col, Form, Image, ListGroup, ListGroupItem, Row } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
-
 import Message from '../components/Message';
 import Rating from '../components/Rating';
-
-import { productAction } from '../reducers/product-slice';
 import { cartActions } from '../reducers/cart-slice';
 import { userDetails } from '../reducers/user-slice';
-import { history } from '../App';
 import { getBookData } from '../actions/product-actions';
 import FullPageLoader from '../components/FullPageLoader';
 import { createReviewData } from '../actions/review-actions';
+import { history } from '../App';
 
 const ProductScreen = (props) => {
   const [qty, setQty] = useState(1);
   const [rating, setRating] = useState(0);
   const [reviewMessage, setReviewMessage] = useState('');
   const [reviews, setReviews] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  const [productimageBase64, setProductimageBase64] = useState(null);
-  // const [product, setProduct] = useState({});
-  // let product = {};
+  const [loading, setLoading] = useState(false);
   const params = useParams();
   const { id } = params;
-
-  // console.log(1 == '1');
-
   const dispatch = useDispatch();
-  // const product = useSelector((state) => state.productDetails.product);
-  // const products = useSelector((state) => state.product.products);
   const cart = useSelector((state) => state.cart.cartItems);
   const admin = useSelector((state) => state.user.isAdmin);
   const product = useSelector((state) => state.product.productDetail);
+  const productLoading = useSelector((state) => state.product.getBookLoading);
   const msg = useSelector((state) => state.product.messageProductDetail);
   const reviewError = useSelector((state) => state.product.reviewMessage);
-
-  // const reviews = useSelector((state) => state.productReviews.reviews)[id];
-  // console.log(reviews);
-
-  // const reviews = rev[id];
-  // const { loading, error } = productDetails;
-
-  // const productReviews = useSelector((state) => state.productReviews);
-  // const { loading: loadingProductReviews, error: errorProductReviews, reviews } = productReviews;
-  // const reviews = [];
-
   const userLogin = useSelector((state) => state.user);
   const { userInfo } = userLogin;
-  // const [product, setProduct] = useState({});
-
-  // const product = products.find((p) => p.productId == id);
-
-  // const productReviewCreate = useSelector((state) => state.productReviewCreate);
-  // const { success: successProductReview, loading: loadingProductReview, error: errorProductReview } = productReviewCreate;
 
   useEffect(() => {
-    // console.log(product);
-    // console.log('jrhv');
-    // if (!prod) {
-    //   return;
-    // }
-    setLoading(true);
+    // setLoading(true);
     dispatch(getBookData(id));
-    setLoading(false);
-    // setProduct(prod);
-    // setReviews(product.reviews);
-    // console.log('////');
-    // reviews = product.reviews;
-    // console.log(reviews);
-    // dispatch({
-    //   type: PRODUCT_REVIEWS_SUCCESS,
-    //   payload: prod.reviews
-    // });
-    // setProductimageBase64(null);
-    // dispatch(listProductDetailsAction(props.match.params.id));
-    // await getProductDetailApi(props.match.params.id).then((r) => {
-    // const prod = products.find((prod) => prod.productId === id);
-    // console.log(id);
-    // console.log(prod);
-    // // reviews = product.reviews;
-    // setProduct(prod);
-    // });
-    // dispatch(listProductReviewsAction(props.match.params.id));
-    // if (product?.imageId) {
-    // await getImageApi(product?.imageId).then((r) => {
-    //   setProductimageBase64(r);
-    // });
-    // }
+    // setLoading(false);
   }, [dispatch, id]);
-  // let reviews = [];
 
   useEffect(() => {
     if (product.reviews) {
@@ -107,15 +48,10 @@ const ProductScreen = (props) => {
       </div>
     );
   }
-  // const [reviews, setReviews] = useState([]);
-  // let imageId = product.imageId;
 
-  console.log(rating);
   const inCart = cart.find((prod) => prod.productId == id);
-  // console.log(product);
 
   const addToCartHandler = () => {
-    // props.history.push(`/cart/${props.match.params.id}?qty=${qty}`);
     dispatch(
       cartActions.addToCart({
         productId: id,
@@ -127,7 +63,6 @@ const ProductScreen = (props) => {
         quantity: qty
       })
     );
-    // props.history.push('/cart')
   };
 
   const createProductReviewHandler = (e) => {
@@ -139,18 +74,24 @@ const ProductScreen = (props) => {
       book_id: id,
       user_id: userDetails.userId
     };
-    dispatch(createReviewData(newReview));
     setLoading(true);
-    dispatch(getBookData(id));
+    dispatch(createReviewData(newReview));
+    setRating(0);
+    setReviewMessage('');
     setLoading(false);
   };
 
-  return !loading ? (
+  return !loading && !productLoading ? (
     <>
       <Row>
-        <Link className='btn btn-dark my-3' to={'..'}>
+        <Button
+          className='btn btn-dark my-3'
+          onClick={() => {
+            props.history.goBack();
+          }}
+        >
           Go Back
-        </Link>
+        </Button>
         {admin && (
           <Link to={`/admin/editBook/${product.productId}`}>
             <Button onClick={() => {}} className='btn my-3 ml-3' variant='warning' type='button'>
@@ -159,11 +100,6 @@ const ProductScreen = (props) => {
           </Link>
         )}
       </Row>
-
-      {/* {error ? (
-        <Message variant='danger'></Message>
-      ) : product ? 
-      ( */}
       <>
         <Row>
           <Col md={6}>
@@ -269,7 +205,6 @@ const ProductScreen = (props) => {
                 <ListGroup.Item key={review.review_id}>
                   <strong>{review.username ? review.username : 'Anonymous'}</strong>
                   <Rating value={review.rating} />
-                  {/* /* <p>{review.created_at.substring(0, 10)}</p> */}
                   <p>{review.description}</p>
                 </ListGroup.Item>
               ))}
@@ -278,9 +213,6 @@ const ProductScreen = (props) => {
           <Col md={6} style={{ borderLeft: '1px solid #eee' }}>
             <ListGroup.Item>
               <h2>Write a Customer Review</h2>
-              {/* {successProductReview && <Message variant='success'>Review submitted successfully</Message>}
-              {loadingProductReview && <Loader />}
-              {errorProductReview && <Message variant='danger'>{errorProductReview}</Message>} */}
               {userInfo ? (
                 <Form onSubmit={createProductReviewHandler}>
                   <Form.Group controlId='rating'>
@@ -318,8 +250,6 @@ const ProductScreen = (props) => {
           </Col>
         </Row>
       </>
-      {/* ) : null} */}
-      {/* {loading && <FullPageLoader></FullPageLoader>} */}
     </>
   ) : (
     <FullPageLoader></FullPageLoader>

@@ -1,16 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Product from '../components/Product';
-
 import { ButtonGroup, Col, Dropdown, DropdownButton, Row } from 'react-bootstrap';
-
-import ReactPaginate from 'react-paginate';
-
 import { useHistory, useLocation } from 'react-router-dom';
 import { getAllBooksData } from '../actions/product-actions';
 import FullPageLoader from '../components/FullPageLoader';
 import Message from '../components/Message';
-import useUpdateEffect from '../components/useUpdateEffect';
 
 const sortQuotes = (quotes, ascending) => {
   return quotes.slice().sort((a, b) => {
@@ -22,23 +17,12 @@ const sortQuotes = (quotes, ascending) => {
   });
 };
 
-// function sortByNum(a, b, order = ASC) {
-//   const diff = a.num - b.num;
-
-//   if (order === ASC) {
-//       return diff;
-//   }
-
-//   return -1 * diff;
-// }
-
 const HomeScreen = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const location = useLocation();
   const prod = useSelector((state) => state.product.products);
   const error = useSelector((state) => state.product.messageProduct);
-  // const [loading, setLoading] = useState(true);
   const loading = useSelector((state) => state.product.getAllBooksLoading);
   const [productList, setProductList] = useState(prod);
   const [sortLowest, setSortLowest] = useState(false);
@@ -47,78 +31,31 @@ const HomeScreen = () => {
   const search = queryParams.get('search');
 
   useEffect(() => {
-    // setLoading(true);
     dispatch(getAllBooksData());
-    // setLoading(false);
   }, [dispatch]);
-  // useEffect(() => setProductList(prod), [prod]);
-
-  // let productList = [];
-
-  // const { loading, error, products, pageResponse } = productList;
 
   useEffect(() => {
-    // if (sort) {
-    //   if (sort === 'lowest') {
-    //   } else {
-
-    //   }
-    // } else {
-    // setLoading(true);
     if (search) {
       const newProd = prod.slice().filter((items) => items.productName.includes(search));
       setProductList(newProd);
     } else {
       setProductList(prod);
-      // dispatch(getAllBooksData());
-      // setProductList(prod);
     }
-    // setLoading(false);
-    // console.log(productList);
-    // }
   }, [prod, search]);
 
-  // useUpdateEffect(() => {
-  //   setLoading(true);
-  //   dispatch(getAllBooksData());
-  //   setProductList(prod);
-  //   setLoading(false);
-  // }, [prod]);
-
-  const handlePageClick = (data) => {
-    let selected = data.selected;
-    // dispatch(listProductsAction(selected));
-  };
-
   const changingSortHandler = (event) => {
-    // event.preventDefault();
-
     const sortAsc = event.includes('Lowest');
     console.log(sortAsc);
     if (sortAsc) {
       setProductList((prev) => sortQuotes(prev, true));
-      // productList = ;
       setSortLowest(true);
       setSortHighest(false);
     } else {
       setProductList((prev) => sortQuotes(prev, false));
-      // productList = ;
       setSortHighest(true);
       setSortLowest(false);
     }
-
-    // history.push({
-    //   pathname: location.pathname,
-    //   search: '?sort=' + (sortAsc ? 'lowest' : 'highest')
-    // });
   };
-
-  const searchHandler = (searchText) => {
-    // event.preventDefault();
-    const newProds = prod.slice().filter((item) => item.productName.includes(searchText));
-    setProductList(newProds);
-  };
-
   return (
     <>
       <Row>
@@ -143,10 +80,6 @@ const HomeScreen = () => {
             <Dropdown.Item eventKey='Lowest' active={sortLowest}>
               Lowest Price
             </Dropdown.Item>
-
-            {/* <Dropdown.Item eventKey='3'>Something else here</Dropdown.Item>
-              <Dropdown.Divider />
-              <Dropdown.Item eventKey='4'>Separated link</Dropdown.Item> */}
           </DropdownButton>
         </Col>
       </Row>
@@ -162,7 +95,6 @@ const HomeScreen = () => {
               </Col>
             ))}
           </Row>
-          {/* pageResponse?.pageable?.pageNumber */}
         </>
       )}
       {loading && <FullPageLoader></FullPageLoader>}

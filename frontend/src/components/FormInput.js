@@ -11,9 +11,7 @@ const FormInput = (props) => {
           placeholder={props.placeholder}
           value={props.value}
           onChange={props.onChange}
-        >
-          {/* {props.as == 'select' && <></>} */}
-        </Form.Control>
+        ></Form.Control>
       </Form.Group>
     </>
   );

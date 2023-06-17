@@ -1,16 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import { Form, Button, Row, Col, Card } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import Message from '../components/Message';
 
 import FormContainer from '../components/FormContainer';
 
-import { userActions } from '../reducers/user-slice';
-import { emailRegex, passwordRegex } from '../constants/common';
 import FormInput from '../components/FormInput';
 import { useHistory, useParams } from 'react-router-dom/cjs/react-router-dom.min';
-import { productAction } from '../reducers/product-slice';
 import { addBookData, getBookData, updateBookData } from '../actions/product-actions';
 import FullPageLoader from '../components/FullPageLoader';
 
@@ -26,20 +22,14 @@ const AddEditBookScreen = (props) => {
   const params = useParams();
   const { id } = params;
   const [loading, setLoading] = useState(id ? true : false);
-  // const products = useSelector((state) => state.product.products);
   const product = useSelector((state) => state.product.productDetail);
   const msg = useSelector((state) => state.product.messageProductDetail);
 
   const messageUpdate = useSelector((state) => state.product.updateProductMessage);
   const messageAdd = useSelector((state) => state.product.addProductMessage);
-  const success = useSelector((state) => state.product.updateSuccess);
   const history = useHistory();
 
   const dispatch = useDispatch();
-  const userInfo = useSelector((state) => state.user.userInfo);
-  const m = useSelector((state) => state.user.messageRegister);
-
-  //   const redirect = props.location.search ? props.location.search.substring(props.location.search.indexOf('=') + 1) : '/';
 
   useEffect(() => {
     setAuthor('');
@@ -53,7 +43,6 @@ const AddEditBookScreen = (props) => {
   useEffect(() => {
     if (id) {
       setLoading(true);
-      // const product = products.find((prod) => prod.productId == id);
       dispatch(getBookData(id));
       setLoading(false);
     }
@@ -75,11 +64,6 @@ const AddEditBookScreen = (props) => {
       }
     }
   }, [id, msg, messageUpdate, messageAdd, product, loading]);
-  //   useEffect(() => {
-  //     // if (userInfo) {
-  //     //   props.history.push(redirect);
-  //     // }
-  //   }, [props.history, userInfo, redirect, m]);
 
   const renderHandler = (e) => {
     e.preventDefault();
@@ -126,9 +110,6 @@ const AddEditBookScreen = (props) => {
       );
     }
     setLoading(false);
-    // const timer = setTimeout(() => {
-    //   dispatch(productAction.updateSuccessFalse());
-    // }, 3000);
 
     if (id && messageUpdate.length === 0) {
       history.goBack();
@@ -137,37 +118,7 @@ const AddEditBookScreen = (props) => {
     if (!id && messageAdd.length === 0) {
       history.push('/');
     }
-
-    // return () => clearTimeout(timer);
   };
-
-  // const registerHandler = async (e) => {
-  //   setMessage(null);
-  //   e.preventDefault();
-  //   if (password !== confirmPassword) {
-  //     setMessage('Passwords do not match');
-  //   } else if (!emailRegex.test(email)) {
-  //     setMessage('Invalid Email');
-  //   } else if (!passwordRegex.test(password)) {
-  //     setMessage('Password must be more than 8 characters.\nIt must contain a number, string and special character');
-  //   } else {
-  //     setMessage(null);
-  //     const details = {
-  //       userName: userName,
-  //       firstName: firstName,
-  //       password: password,
-  //       email: email
-  //     };
-
-  //     const login = {
-  //       userName: email,
-  //       password: password
-  //     };
-  //     dispatch(userActions.register(details));
-
-  //     dispatch(userActions.login(login));
-  //   }
-  // };
 
   return !loading ? (
     <div>
@@ -176,16 +127,12 @@ const AddEditBookScreen = (props) => {
         {message && (id ? messageUpdate.length === 0 : messageAdd.length === 0) && <Message variant='warning'>{message}</Message>}
         {id && messageUpdate.length > 0 && <Message variant='warning'>{messageUpdate}</Message>}
         {!id && messageAdd.length > 0 && <Message variant='warning'>{messageAdd}</Message>}
-        {/* {message.length===0 && } */}
-
         <Form onSubmit={addEditHandler}>
           <Card.Img src={renderImage} variant='top' style={{ width: '80%', height: '350px' }}></Card.Img>
-
           <Row className='mt-3'>
             <div className='col-10'>
               <FormInput id='image' title='Image URL' placeholder='Image URL' value={image} onChange={(e) => setImage(e.target.value)} />
             </div>
-
             <Button onClick={renderHandler} className='btn btn-dark ml-2 mr-2 my-3 mt-3' variant='warning'>
               Render
             </Button>
@@ -207,14 +154,6 @@ const AddEditBookScreen = (props) => {
             value={description}
             onChange={(e) => setDescription(e.target.value)}
           />
-
-          {/* <Form.Group controlId='password'>
-            <Form.Label className='font-italic'>Out Of Stock</Form.Label>
-            <Form.Control required as='select' value={outOfStock} onChange={(e) => setOutOfStock(e.target.value)}>
-              <option value='true'>Yes</option>
-              <option value='false'>No</option>
-            </Form.Control>
-          </Form.Group> */}
           <Form.Group controlId='outOfStock'>
             <Form.Label className='font-italic'>Out Of Stock</Form.Label>
             <Row>
@@ -235,11 +174,7 @@ const AddEditBookScreen = (props) => {
                 checked={outOfStock === 'false'}
               />
             </Row>
-
-            {/* <option value='true'>Yes</option>
-              <option value='false'>No</option> */}
           </Form.Group>
-
           <Button className='custom-btn' type='submit' variant='warning'>
             {id ? 'Edit Book' : 'Add Book'}
           </Button>

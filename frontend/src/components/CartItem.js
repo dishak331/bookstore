@@ -7,8 +7,6 @@ import { Link } from 'react-router-dom';
 import { cartActions } from '../reducers/cart-slice';
 
 const CartItem = ({ item, addToCart }) => {
-  // const products = useSelector((state) => state.product.products);
-  // const product = products.find((prod) => prod.productId == item.productId);
   const dispatch = useDispatch();
 
   useEffect(() => {}, []);

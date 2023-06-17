@@ -14,7 +14,6 @@ export const getAllBooksData = () => {
       const body = await response.json();
       console.log(body);
       if (!response.ok) {
-        // console.log(body);
         dispatch(productAction.updateProductMessage({ message: 'Some error occured' }));
       } else {
         dispatch(productAction.updateProductMessage({ message: '' }));
@@ -35,8 +34,8 @@ export const getAllBooksData = () => {
         });
 
         dispatch(productAction.getAllProduct({ products: prod }));
-        dispatch(productAction.GET_ALL_BOOKS_LOADING_CHANGE({ loading: false }));
       }
+      dispatch(productAction.GET_ALL_BOOKS_LOADING_CHANGE({ loading: false }));
     } catch (error) {
       console.log('error occured');
       dispatch(productAction.GET_ALL_BOOKS_LOADING_CHANGE({ loading: false }));
@@ -48,7 +47,7 @@ export const getAllBooksData = () => {
 export const getBookData = (id) => {
   return async (dispatch) => {
     try {
-      // dispatch(productAction.GET_ALL_BOOKS_LOADING_CHANGE({ loading: true }));
+      dispatch(productAction.setProductLoading({ loading: true }));
       const response = await fetch(`${productURL}/books/${id}`, {
         method: 'GET',
         headers: headers
@@ -56,7 +55,6 @@ export const getBookData = (id) => {
       const body = await response.json();
       console.log(body);
       if (!response.ok) {
-        // console.log(body);
         dispatch(productAction.updateProductDetailMessage({ message: 'Some error occured' }));
       } else {
         dispatch(productAction.updateProductDetailMessage({ message: '' }));
@@ -75,11 +73,11 @@ export const getBookData = (id) => {
         };
 
         dispatch(productAction.setProductDetail({ productDetail: prod }));
-        // dispatch(productAction.GET_ALL_BOOKS_LOADING_CHANGE({ loading: false }));
       }
+      dispatch(productAction.setProductLoading({ loading: false }));
     } catch (error) {
+      dispatch(productAction.setProductLoading({ loading: false }));
       console.log('error occured');
-      //   dispatch(productAction.GET_ALL_BOOKS_LOADING_CHANGE({ loading: false }));
       dispatch(productAction.updateProductDetailMessage({ message: 'Server error: Try again later' }));
     }
   };
@@ -88,7 +86,6 @@ export const getBookData = (id) => {
 export const updateBookData = (data) => {
   return async (dispatch) => {
     try {
-      // dispatch(productAction.GET_ALL_BOOKS_LOADING_CHANGE({ loading: true }));
       const response = await fetch(`${productURL}/books`, {
         method: 'PUT',
         headers: headers,
@@ -97,7 +94,6 @@ export const updateBookData = (data) => {
       const body = await response.json();
       console.log(body);
       if (!response.ok) {
-        // console.log(body);
         dispatch(productAction.setUpdateProductMessage({ message: 'Some error occured' }));
       } else {
         dispatch(productAction.setUpdateProductMessage({ message: '' }));
@@ -116,11 +112,9 @@ export const updateBookData = (data) => {
         };
 
         dispatch(productAction.setProductDetail({ productDetail: prod }));
-        // dispatch(productAction.GET_ALL_BOOKS_LOADING_CHANGE({ loading: false }));
       }
     } catch (error) {
       console.log('error occured');
-      //   dispatch(productAction.GET_ALL_BOOKS_LOADING_CHANGE({ loading: false }));
       dispatch(productAction.setUpdateProductMessage({ message: 'Server error: Try again later' }));
     }
   };
@@ -130,7 +124,6 @@ export const addBookData = (data) => {
   return async (dispatch) => {
     try {
       console.log(JSON.stringify(data));
-      // dispatch(productAction.GET_ALL_BOOKS_LOADING_CHANGE({ loading: true }));
       const response = await fetch(`${productURL}/books`, {
         method: 'POST',
         headers: headers,
@@ -139,30 +132,13 @@ export const addBookData = (data) => {
       const body = await response.json();
       console.log(body);
       if (!response.ok) {
-        // console.log(body);
         dispatch(productAction.setAddProductMessage({ message: 'Some error occured' }));
       } else {
         dispatch(productAction.setAddProductMessage({ message: '' }));
         const product = body;
-        //   const prod = {
-        //     productId: product.book_id,
-        //     imageId: product.image_url,
-        //     averageRating: product.average_reviews,
-        //     noOfRatings: product.total_reviews,
-        //     price: product.price,
-        //     productName: product.title,
-        //     author: product.author,
-        //     outOfStock: product.out_of_stock,
-        //     description: product.description,
-        //     reviews: product.reviews
-        //   };
-
-        //   dispatch(productAction.setProductDetail({ productDetail: prod }));
-        // dispatch(productAction.GET_ALL_BOOKS_LOADING_CHANGE({ loading: false }));
       }
     } catch (error) {
       console.log('error occured');
-      //   dispatch(productAction.GET_ALL_BOOKS_LOADING_CHANGE({ loading: false }));
       dispatch(productAction.setAddProductMessage({ message: 'Server error: Try again later' }));
     }
   };

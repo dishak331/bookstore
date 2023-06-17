@@ -3,10 +3,7 @@ import { Link, useHistory } from 'react-router-dom';
 import { Form, Button, Row, Col } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import Message from '../components/Message';
-
 import FormContainer from '../components/FormContainer';
-
-import { userActions } from '../reducers/user-slice';
 import { emailRegex, passwordRegex } from '../constants/common';
 import { loginUserData } from '../actions/user-actions';
 import FullPageLoader from '../components/FullPageLoader';
@@ -19,7 +16,6 @@ const LoginScreen = (props) => {
   const dispatch = useDispatch();
   const userInfo = useSelector((state) => state.user.userInfo);
   const message = useSelector((state) => state.user.messageLogin);
-  // const { loading, userInfo } = userLogin;
   const history = useHistory();
 
   const redirect = props.location.search ? props.location.search.substring(props.location.search.indexOf('=') + 1) : '/';
@@ -34,20 +30,12 @@ const LoginScreen = (props) => {
   const loginSubmitHandler = (e) => {
     e.preventDefault();
     console.log('doing');
-    // if(userNameOrEmail.length===0||password.length===0){
-    //   setMsg("")
-    // }
 
     if (!emailRegex.test(userNameOrEmail) && !passwordRegex.test(password)) {
       console.log(userNameOrEmail);
       setMsg('Invalid Email or Password');
       return;
     }
-    // if () {
-    //   console.log(password);
-    //   setMsg('Invalid Password');
-    //   return;
-    // }
     setMsg('');
     setLoading(true);
     const loginDetails = {
@@ -56,7 +44,6 @@ const LoginScreen = (props) => {
     };
     dispatch(loginUserData(loginDetails));
     setLoading(false);
-    // history.push(redirect);
     console.log('done');
   };
 

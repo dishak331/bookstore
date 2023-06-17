@@ -3,10 +3,8 @@ import { Link } from 'react-router-dom';
 import { Form, Button, Row, Col } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import Message from '../components/Message';
-
 import FormContainer from '../components/FormContainer';
 import FullPageLoader from '../components/FullPageLoader';
-import { userActions } from '../reducers/user-slice';
 import { emailRegex, passwordRegex } from '../constants/common';
 import { registerUserData } from '../actions/user-actions';
 
@@ -18,30 +16,14 @@ const RegisterScreen = (props) => {
   const [confirmPassword, setconfirmPassword] = useState('');
   const [message, setMessage] = useState(null);
   const [loading, setLoading] = useState(false);
-
   const dispatch = useDispatch();
   const userInfo = useSelector((state) => state.user.userInfo);
   const m = useSelector((state) => state.user.messageRegister);
-  const success = useSelector((state) => state.user.registerSuccess);
-  // const counterForMessage = 0;
-  const isInitialMount = useRef(true);
-
   const redirect = props.location.search ? props.location.search.substring(props.location.search.indexOf('=') + 1) : '/login';
 
   useEffect(() => {
-    // if (m.length == 0 && ) {
-    //   login();
-    //   props.history.push(redirect);
-    // }
-    // if (isInitialMount.current) {
-    //   isInitialMount.current = false;
-    // } else {
-    //   console.log(m);
-    //   if (m.length === 0) {
     if (userInfo) {
       props.history.push(redirect);
-
-      // counterForMessage++;
     }
   }, [userInfo, props.history, redirect]);
 
@@ -67,18 +49,6 @@ const RegisterScreen = (props) => {
 
       dispatch(registerUserData(details));
       setLoading(false);
-      // //  dispatch(userActions.register(details));
-      // props.history.push('/login');
-      // counterForMessage = counterForMessage + 1;
-      // //    const data = {
-      // //  userName: email,
-      // //  password: password,
-      // //  register: true
-      // //   };
-
-      // //    dispatch(userActions.login(data));
-      // setMessage(null);
-      // console.log(`////${m}`);
     }
   };
 

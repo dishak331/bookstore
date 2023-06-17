@@ -1,9 +1,7 @@
 import React, { useEffect } from 'react';
-
-import { Row, Col, ListGroup, Image, Card, Button } from 'react-bootstrap';
+import { Row, Col, ListGroup, Card } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import Message from '../components/Message';
-
 import OrderItem from '../components/OrderItem';
 import { getOrderByIdData } from '../actions/order-actions';
 import FullPageLoader from '../components/FullPageLoader';
@@ -21,16 +19,10 @@ const OrderScreen = ({ match, history }) => {
   const userInfo = useSelector((state) => state.user.userInfo);
   const user = useSelector((state) => state.user.user);
 
-  // const orders = useSelector((state) => state.order.orders);
   const order = useSelector((state) => state.order.orderDetails);
   const error = useSelector((state) => state.order.orderMessage);
   const admin = useSelector((state) => state.user.isAdmin);
   const userData = useSelector((state) => state.order.userData);
-
-  // if (!order.orderId) {
-  //   history.push('/');
-  // }
-
   useEffect(() => {
     if (!userInfo) {
       history.push('/login');
@@ -71,11 +63,6 @@ const OrderScreen = ({ match, history }) => {
                     <strong>Email: </strong>{' '}
                     <a href={`mailto:${userId ? userData.email : user.email}`}>{userId ? userData.email : user.email}</a>
                   </p>
-                  {/* <p>
-                  <strong>Address:</strong>
-                  {order.shippingAddress.addressLine1}, {order.shippingAddress.city} {order.shippingAddress.postalCode},{' '}
-                  {order.shippingAddress.country}
-                </p> */}
                   {order.isDelivered ? (
                     <Message variant='success'>Delivered on {order.deliveredAt}</Message>
                   ) : (
@@ -128,24 +115,6 @@ const OrderScreen = ({ match, history }) => {
                       </Col>
                     </Row>
                   </ListGroup.Item>
-                  {/* <ListGroup.Item>
-                    <Row>
-                      <Col>Shipping</Col>
-                      <Col>${order.shippingPrice}</Col>
-                    </Row>
-                  </ListGroup.Item>
-                  <ListGroup.Item>
-                    <Row>
-                      <Col>Tax</Col>
-                      <Col>${order.taxPrice}</Col>
-                    </Row>
-                  </ListGroup.Item>
-                  <ListGroup.Item>
-                    <Row>
-                      <Col>Total</Col>
-                      <Col>${order.totalPrice}</Col>
-                    </Row>
-                  </ListGroup.Item> */}
                 </ListGroup>
               </Card>
             </Col>
