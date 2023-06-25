@@ -25,21 +25,29 @@ public class Reviews {
 	
 	@NotNull(message="user_id cannot be null")
 	private int user_id;
+	private String username;
 	@NotNull(message="Rating cannot be null")
 	private int rating;
 	private String content;
 	public Reviews(int review_id, int user_id, @NotNull(message = "Rating cannot be null") int rating,
-			String description, int book_id) {
+			String description, int book_id, String username) {
 		super();
 		this.review_id = review_id;
 		this.book_id = book_id;
 		this.user_id = user_id;
 		this.rating = rating;
 		this.content = description;
+		this.username = username;
 	}
 	public Reviews() {
 		super();
 		// TODO Auto-generated constructor stub
+	}
+	public String getUsername() {
+		return username;
+	}
+	public void setUsername(String username) {
+		this.username = username;
 	}
 	public int getReview_id() {
 		return review_id;

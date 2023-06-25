@@ -24,6 +24,14 @@ public class ReviewServiceImpl implements ReviewService {
 //	@Autowired
 //	private BookDao bookDao;
 
+	public ReviewServiceImpl(ReviewDao reviewDao, RestTemplate restTemplate, ModelMapper modelMapper) {
+		this.reviewDao = reviewDao;
+		this.restTemplate = restTemplate;
+		this.modelMapper = modelMapper;
+	}
+
+	
+
 	@Override
 	public List<Reviews> getReviews(int user_id, int book_id) {
 		// TODO Auto-generated method stub
@@ -48,7 +56,7 @@ public class ReviewServiceImpl implements ReviewService {
 		int id=review.getBook_id();
 		System.out.println(id);
 		Object forObj = this.restTemplate.getForObject("http://localhost:9002/books/"+id, Object.class);
-		System.out.print("/////////////");
+		
 		System.out.println(forObj);
 		BookDto book = this.modelMapper.map(forObj, BookDto.class);
 		

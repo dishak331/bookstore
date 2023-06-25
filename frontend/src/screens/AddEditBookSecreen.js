@@ -77,7 +77,7 @@ const AddEditBookScreen = (props) => {
       setMessage('Price cannot be anything other than a number');
       return;
     }
-    if (description.length > 100) {
+    if (description.length > 200) {
       setMessage('Description too long');
       return;
     }

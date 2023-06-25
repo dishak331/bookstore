@@ -27,6 +27,10 @@ public class BookServiceImpl implements BookService {
 //		list=new ArrayList<>();
 	}
 	
+	public BookServiceImpl(BookDao bookDao) {
+		this.bookDao = bookDao;
+	}
+
 	@Override
 	public List<Books> getBooks(){
 		

@@ -1,8 +1,10 @@
 package com.bookstore.orders.entities;
 
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+
 
 import com.bookstore.orders.payloads.UserDto;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -38,14 +40,14 @@ public class Orders {
 	
 	
 
-	public Orders(int order_id, LocalDateTime order_date, int user_id, String is_delivered, LocalDateTime shipping_date,
+	public Orders(int order_id, LocalDateTime dateTime, int user_id, String is_delivered, LocalDateTime dateTime2,
 			@NotNull(message = "total cannot be null") double total, List<Order_Details> order_details) {
 		super();
 		this.order_id = order_id;
-		this.order_date = order_date;
+		this.order_date = dateTime;
 		this.user_id = user_id;
 		this.is_delivered = is_delivered;
-		this.shipping_date = shipping_date;
+		this.shipping_date = dateTime2;
 		this.total = total;
 		this.order_details = order_details;
 	}

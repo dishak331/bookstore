@@ -32,18 +32,26 @@ public class Order_Details {
 	private double book_price;
 	@NotNull
 	private double subtotal;
+	private String book_image;
 	public Order_Details(int order_details_id, Orders order, @NotNull int book_qty, @NotNull double book_price,
-			@NotNull double subtotal) {
+			@NotNull double subtotal,String book_image) {
 		super();
 		this.order_details_id = order_details_id;
 		this.order = order;
 		this.book_qty = book_qty;
 		this.book_price = book_price;
 		this.subtotal = subtotal;
+		this.book_image = book_image;
 	}
 	public Order_Details() {
 		super();
 		// TODO Auto-generated constructor stub
+	}
+	public String getBook_image() {
+		return book_image;
+	}
+	public void setBook_image(String book_image) {
+		this.book_image = book_image;
 	}
 	public int getOrder_details_id() {
 		return order_details_id;

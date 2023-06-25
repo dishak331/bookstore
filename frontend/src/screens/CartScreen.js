@@ -49,7 +49,7 @@ const CartScreen = (props) => {
           <Col md={8}>
             {cart == null || cart.cartItems.length == 0 ? (
               <Message>
-                Your cart is empty <Link to='/'>Go Back</Link>
+                Your cart is empty <Button onClick={() => props.history.goBack()}>Go Back</Button>
               </Message>
             ) : (
               <ListGroup.Item variant='flush'>

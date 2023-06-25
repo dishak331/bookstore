@@ -11,13 +11,16 @@ import com.bookstore.users.exceptions.InvalidCredentialsException;
 import com.bookstore.users.exceptions.ResourceNotFoundException;
 
 
-
 @Service
 public class UserServiceImpl implements UserService {
 	@Autowired
 	private UserDao userDao;
 	
-	public UserServiceImpl() {}
+	
+	
+	public UserServiceImpl(UserDao userDao) {
+		this.userDao = userDao;
+	}
 	
 	@Override
 	public Users login(Users user) throws Exception {

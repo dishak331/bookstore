@@ -1,5 +1,9 @@
 package com.bookstore.reviews.payloads;
 
+import java.util.List;
+
+import com.bookstore.reviews.entities.Reviews;
+
 public class BookDto {
 	private int book_id;
 	private String title;
@@ -35,6 +39,9 @@ public class BookDto {
 		super();
 		// TODO Auto-generated constructor stub
 	}
+
+
+
 
 
 	public int getBook_id() {

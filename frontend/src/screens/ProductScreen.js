@@ -67,6 +67,7 @@ const ProductScreen = (props) => {
 
   const createProductReviewHandler = (e) => {
     e.preventDefault();
+    console.log(userDetails.userName);
     const newReview = {
       username: userDetails.userName,
       description: reviewMessage,

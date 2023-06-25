@@ -25,7 +25,6 @@ footer {
   bottom: 0 !important;
   position: fixed;
   width: 100%;
-  /* min-height: 10px; */
   height:1px !important;
 }
 
@@ -35,13 +34,11 @@ footer {
 
 .bookstore-brand {
   font-family: 'Kaushan Script';
-   /* cursive; */
   font-size: 2em !important;
   font-weight: 800;
   clip-path: polygon(0 30%, 100% 11%, 100% 75%, 0 92%);
   color:white !important;
   background: rgb(2, 0, 36);
-  /* background: linear-gradient(84deg, rgba(2, 0, 36, 1) 21%, rgba(0, 0, 179, 1) 63%, rgba(191, 0, 76, 1) 92%); */
   padding: 5px;
 }
 
@@ -58,7 +55,6 @@ footer {
 }
 
 .product {
-  /* background-color: #f5f2eb !important; */
   transition: all 0.4s cubic-bezier(0.175, 0.885, 0, 1) !important;
   border-radius: 20px !important;
   border-color: #ede7da !important;
@@ -95,8 +91,6 @@ footer {
 .page-item.active {
   z-index: 3;
   color: #fff;
-  /* background-color: #d9230f; */
-  /* border-color: #d9230f; */
 }
 
 .page-item:first-child .page-link {
@@ -115,5 +109,3 @@ footer {
   background-color: #fff;
   border: 1px solid #eee;
 }
-
-

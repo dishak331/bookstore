@@ -32,6 +32,12 @@ public class OrderServiceImpl implements OrderService {
 		
 	}
 	
+	public OrderServiceImpl(OrdersDao orderDao, OrderDetailsDao orderDetailsDao) {
+		this.orderDao = orderDao;
+		this.orderDetailsDao = orderDetailsDao;
+		// TODO Auto-generated constructor stub
+	}
+
 	@Override
 	public List<Orders> getOrders() {
 		return orderDao.findAll();
@@ -65,18 +71,11 @@ public class OrderServiceImpl implements OrderService {
 		int id=order.getOrder_id();
 		
 		Orders o = orderDao.getOne(id);
-		for(Order_Details details: order.getOrder_details()) {
-			
+		for(Order_Details details: order.getOrder_details()) {			
 			details.setOrder(o);
-			orderDetailsDao.save(details);
+			orderDetailsDao.save(details);			
+		}		
 			
-		}
-		
-		System.out.println(order.getOrder_details());
-		
-	
-		
-		
 		return order;
 	}
 }

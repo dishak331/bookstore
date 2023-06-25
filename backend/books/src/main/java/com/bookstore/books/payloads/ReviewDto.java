@@ -12,18 +12,26 @@ public class ReviewDto {
 	
 	private int rating;
 	private String content;
+	private String username;
 	public ReviewDto(int review_id, int user_id,  int rating,
-			String description, int book_id) {
+			String description, int book_id, String username) {
 		super();
 		this.review_id = review_id;
 		this.book_id = book_id;
 		this.user_id = user_id;
 		this.rating = rating;
 		this.content = description;
+		this.username = username;
 	}
 	public ReviewDto() {
 		super();
 		// TODO Auto-generated constructor stub
+	}
+	public String getUsername() {
+		return username;
+	}
+	public void setUsername(String username) {
+		this.username = username;
 	}
 	public int getReview_id() {
 		return review_id;
